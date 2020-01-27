@@ -31,7 +31,6 @@ export default class Product extends Component {
                         </h5>
                     </div>
                 </div>
-                <h3>Hello from Product</h3>
             </ProductWrapper>
         );
     }
