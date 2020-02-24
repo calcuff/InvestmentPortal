@@ -5,7 +5,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import NavBar from './Components/NavBar'
 import Home from './Components/Home'
-import Cart from './Components/Cart'
+import Login from './Components/Login'
 import ProductList from './Components/ProductList'
 import Details from './Components/Details'
 import Default from './Components/Default'
@@ -28,7 +28,7 @@ class App extends Component{
           <Route exact path="/movers" component={Movers}/>
           {/*<Route exact path="/" component={ProductList}/>*/}
           <Route path="/details" component={Details}/>
-          <Route path="/cart" component={Cart}/>
+          <Route path="/login" component={Login}/>
           <Route component={Default}/>
           </Switch>  
       </React.Fragment>
