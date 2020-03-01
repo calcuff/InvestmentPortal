@@ -21,7 +21,7 @@ func (a *App) Start() error {
 	// Set up new router
 	router := httprouter.New()
 	// /Quotes endpoint
-	router.GET("/Quotes", api.Summary)
+	router.GET("/Summary", api.Summary)
 	// Enable CORS to make API accessible by client-side
 	handler := cors.Default().Handler(router)
 	// Start server
