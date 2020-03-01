@@ -49,24 +49,25 @@ export default class Summary extends React.Component {
         <React.Fragment>    
           <h2>Today's Market Summary</h2>
           
-          <div>
-              <div> Exchange Name: {markets.marketSummaryResponse.result[0].fullExchangeName}</div>
-              <div> Time Zone: {markets.marketSummaryResponse.result[0].exchangeTimezoneName}</div>
-              <div> Symbol: {markets.marketSummaryResponse.result[0].symbol}</div>
-              <div> Market Change: {markets.marketSummaryResponse.result[0].regularMarketChange.fmt}</div>
-              <div> Market Time: {markets.marketSummaryResponse.result[0].regularMarketTime.fmt}</div>
-              <div> Market Change Percent: {markets.marketSummaryResponse.result[0].regularMarketChangePercent.fmt}</div>
-              <div> Quote Type: {markets.marketSummaryResponse.result[0].quoteType}</div>
-              <div> Market State: {markets.marketSummaryResponse.result[0].marketState}</div>
-              <div> Market Price: {markets.marketSummaryResponse.result[0].regularMarketPrice.fmt}</div>
-              <div> Exchange: {markets.marketSummaryResponse.result[0].exchange}</div>
-              <div> Short Name: {markets.marketSummaryResponse.result[0].shortName}</div>
-              <div> Market Previous Close: {markets.marketSummaryResponse.result[0].regularMarketPreviousClose.fmt}</div>
-              
-              
-              {/* {markets.marketSummaryResponse.map(result => <div>{result.fullExchangeName}</div>)} */}
-          {/* <Results markets={this.state.markets} /> */}
-          </div>
+          <div className="container">
+            {markets.marketSummaryResponse.result.map((result => 
+            <div className="card">
+                   <div className="card-body" key={result.fullExchangeName} >
+                   <h5 className="card-title">{result.fullExchangeName}</h5>
+                   <h6 className="card-subtitle mb-2 text-muted">Time Zone: {result.exchangeTimezoneName}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted">Symbol: {result.symbol}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted">Market Change: {result.regularMarketChange.fmt}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Market Time: {result.regularMarketTime.fmt}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Market Change Percent: {result.regularMarketChangePercent.fmt}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Quote Type: {result.quoteType}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Market State: {result.marketState}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Market Price: {result.regularMarketPrice.fmt}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Exchange: {result.exchange}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Short Name: {result.shortName}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Market Previous Close: {result.regularMarketPreviousClose.fmt}</h6>
+                   </div>
+            </div>))}
+        </div>
         </React.Fragment>
       );
         }
