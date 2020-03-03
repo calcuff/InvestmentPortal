@@ -13,7 +13,9 @@ import Quotes from './Components/Quotes'
 import Portfolio from './Components/Portfolio'
 import Summary from './Components/Summary'
 import Movers from './Components/Movers'
-
+import Foo from './Components/Foo'
+import Test from './Components/Test'
+import Register from './Components/Register'
 
 class App extends Component{
   render() {
@@ -29,6 +31,9 @@ class App extends Component{
           {/*<Route exact path="/" component={ProductList}/>*/}
           <Route path="/details" component={Details}/>
           <Route path="/login" component={Login}/>
+          <Route path="/foo" component={Foo}/>
+          <Route path="/test" component={Test}/>
+          <Route path="/register" component={Register} />
           <Route component={Default}/>
           </Switch>  
       </React.Fragment>
