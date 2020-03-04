@@ -26,18 +26,17 @@ func Register(w http.ResponseWriter, r *http.Request, params httprouter.Params) 
 
 	if err := populateModelFromHandler(w, r, params, &user); err != nil {
 		fmt.Println("Error populating model")
-		//write error
+		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
 		return
 	}
 
 	err := services.Register(user)
 	if err != nil {
-		//write error
+		writeErrorResponse(w, http.StatusOK, "Could not register")
 		return
 	}
 	fmt.Println("Returned to api")
 	writeOKResponse(w, user)
-	fmt.Fprint(w) //,resp
 }
 
 func Login(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
@@ -46,14 +45,16 @@ func Login(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
 	if err := populateModelFromHandler(w, r, params, &creds); err != nil {
 		fmt.Println("Error populating model")
-		//write error
+		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
 		return
 	}
+
 	err := services.Login(creds)
 	if err != nil {
-		//write error
+		writeErrorResponse(w, http.StatusNotExtended, "Bad credentials")
 		return
 	}
+
 	fmt.Println("Returned to api")
 	writeOKResponse(w, creds)
 	fmt.Fprint(w) //,resp
@@ -76,7 +77,19 @@ func populateModelFromHandler(w http.ResponseWriter, r *http.Request, params htt
 	return nil
 }
 
+// Writes the response as a standard JSON response with StatusOK
 func writeOKResponse(w http.ResponseWriter, m interface{}) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "true")
+}
+
+// Writes the error response as a Standard API JSON response with a response code
+func writeErrorResponse(w http.ResponseWriter, errorCode int, errorMsg string) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(errorCode)
+	json.
+		NewEncoder(w).
+		Encode(&models.JsonErrorResponse{Error: &models.ApiError{Status: errorCode, Title: errorMsg}})
+	fmt.Fprintf(w, "false")
 }

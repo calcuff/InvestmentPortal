@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 
 	"../models"
@@ -36,6 +37,11 @@ func Init() *sql.DB {
 // Takes in a User model and inserts in into the database
 func Register(user models.User) error {
 	fmt.Println("Registering in DB")
+
+	err := ifExists(user.Email)
+	if err != nil {
+		return err
+	}
 
 	db := Init()
 	stmt, err := db.Prepare("INSERT INTO users (name, email, role, phone, password) VALUES ($1, $2, $3, $4, $5)")
@@ -72,15 +78,38 @@ func Login(creds models.Creds) error {
 	}
 
 	defer rows.Close()
+	defer db.Close()
 
 	if !rows.Next() {
 		fmt.Println("Did not find creds")
-		return nil
+		return sql.ErrNoRows
 	} else {
 		fmt.Println("Found good creds")
+		return nil
 	}
 
+}
+
+func ifExists(email string) error {
+	db := Init()
+
+	stmt, err := db.Prepare("select * from users where email = $1")
+
+	rows, err := stmt.Query(&email)
+	if err != nil {
+		fmt.Println("ERROR IN REPO: ", err)
+		return err
+	}
+
+	defer rows.Close()
 	defer db.Close()
 
-	return nil
+	if rows.Next() {
+		fmt.Println("Email already exists")
+		return errors.New("Unique email constraint")
+	} else {
+		fmt.Println("No user exists")
+		return nil
+	}
+
 }
