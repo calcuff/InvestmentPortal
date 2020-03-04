@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
+import axios from "axios";
 
 export default class Login extends Component {
     state = {
@@ -14,8 +15,24 @@ export default class Login extends Component {
       }
 
       onSubmit = async () => {
-          console.log("Logging in...", this.state)
-          
+          const creds = {
+            email: this.state.email,
+            password: this.state.password
+          };
+
+          const headers = {'Content-Type': 'application/json' }
+
+          console.log("Logging in...", creds)
+          axios.post('http://localhost:8080/login', 
+            {
+                email: this.state.email,
+                password: this.state.password
+            },{headers: headers})
+          .then(res =>
+            console.log("Data :", res.data)
+          ).catch((error) => 
+            console.log("Errs", error)
+        );
     }
 
       render() {

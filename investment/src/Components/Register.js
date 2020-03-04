@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Title from './Title'
 import {Link} from 'react-router-dom'
+import axios from "axios";
 
 export default class Register extends Component {
     state = {
@@ -19,8 +20,33 @@ export default class Register extends Component {
       }
 
       onSubmit = async () => {
-          console.log("Registering...", this.state)
-    }
+        const user = {
+            name: this.state.name,
+            email: this.state.email,
+            role: this.state.role,
+            phone: this.state.phone,
+            password: this.state.password
+          };
+
+          const headers = {'Content-Type': 'application/json' }
+
+          console.log("Registering...", user)
+          axios.post('http://localhost:8080/register', 
+            {
+                name: this.state.name,
+                email: this.state.email,
+                role: this.state.role,
+                phone: this.state.phone,
+                password: this.state.password
+            },{headers: headers})
+          .then(res =>
+            console.log("Data :", res.data)
+          ).catch((error) => 
+            console.log("Errs", error)
+        );
+      }
+    
+
     render() {
         return(
         <div align="center">

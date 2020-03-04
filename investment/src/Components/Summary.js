@@ -61,7 +61,7 @@ export default class Summary extends React.Component {
                    <h6 className="card-subtitle mb-2 text-muted"> Market Change Percent: {result.regularMarketChangePercent.fmt}</h6>
                    <h6 className="card-subtitle mb-2 text-muted"> Quote Type: {result.quoteType}</h6>
                    <h6 className="card-subtitle mb-2 text-muted"> Market State: {result.marketState}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Market Price: {result.regularMarketPrice.fmt}</h6>
+                   <h6 className="card-subtitle mb-2 text-muted"> Market Price: ${result.regularMarketPrice.fmt}</h6>
                    <h6 className="card-subtitle mb-2 text-muted"> Exchange: {result.exchange}</h6>
                    <h6 className="card-subtitle mb-2 text-muted"> Short Name: {result.shortName}</h6>
                    <h6 className="card-subtitle mb-2 text-muted"> Market Previous Close: {result.regularMarketPreviousClose.fmt}</h6>
