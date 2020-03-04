@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"../models"
+	db "../repo"
 )
 
 func YahooSummary() models.YahooResponse {
@@ -40,4 +41,24 @@ func YahooSummary() models.YahooResponse {
 	}
 
 	return marketSummary
+}
+
+func Register(user models.User) error {
+	fmt.Println("Registering in services")
+
+	err := db.Register(user)
+	if err != nil {
+		return err
+	}
+	
+	return nil
+}
+
+func Login(creds models.Creds) error {
+	fmt.Println("Logging in in services")
+	err := db.Login(creds)
+	if err != nil {
+		return err
+	}
+	return nil
 }
