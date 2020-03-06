@@ -2,6 +2,16 @@ import React, { Component } from 'react'
 import Title from './Title'
 import {Link} from 'react-router-dom'
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+
+function validate(name, email, password, confpass){
+    return {
+        name: name.length === 0,
+        email: email.length === 0,
+        password: password.length === 0,
+        confpass: confpass.length === 0
+      };
+  }
 
 export default class Register extends Component {
     state = {
@@ -10,7 +20,10 @@ export default class Register extends Component {
         role: '',
         phone: '',
         password: '',
-        confpass: ''
+        confpass: '',
+        redirect: null,
+        loggedin: 0,
+        goodpassword: 0
       }
 
       onChange = (e) => {
@@ -20,35 +33,38 @@ export default class Register extends Component {
       }
 
       onSubmit = async () => {
-        const user = {
-            name: this.state.name,
-            email: this.state.email,
-            role: this.state.role,
-            phone: this.state.phone,
-            password: this.state.password
-          };
-
-          const headers = {'Content-Type': 'application/json' }
-
-          console.log("Registering...", user)
-          axios.post('http://localhost:8080/register', 
-            {
-                name: this.state.name,
-                email: this.state.email,
-                role: this.state.role,
-                phone: this.state.phone,
-                password: this.state.password
-            },{headers: headers})
-          .then(res =>
-            console.log("Data :", res.data)
-          ).catch((error) => 
-            console.log("Errs", error)
-        );
-      }
-    
+          if ( this.state.password != this.state.confpass){
+            this.setState({goodpassword: -1});
+          }else{
+            console.log("Registering...", this.state)
+            
+            const headers = {'Content-Type': 'application/json' }
+            axios.post('http://localhost:8080/register', 
+                {   name: this.state.name,
+                    email: this.state.email,
+                    role: this.state.role,
+                    phone: this.state.phone,
+                    password: this.state.password
+                },{headers: headers})
+            .then(res =>{
+                console.log("Data :", res.data)
+                if ( res.data == true){
+                    this.setState({ redirect: "/", loggedin: 1});
+                }else {
+                    this.setState({loggedin: -1});}
+            }).catch((error) => console.log("Errs", error));
+          }
+        } // end of onSubmit
 
     render() {
-        return(
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+
+        const errors = validate(this.state.name, this.state.email, this.state.password, this.state.confpass);
+        const isDisabled = Object.keys(errors).some(x => errors[x]);
+
+        return( 
         <div align="center">
         <div className="card"> </div>
           <h5 className="card-body" align="center">Create an Account</h5>
@@ -119,10 +135,12 @@ export default class Register extends Component {
                  </td>
              </tr>
          </tbody>
-     </table>
-     <br />
-     <button onClick={() => this.onSubmit()} type="primary">Register</button>
-   </div>
- );
-}
+        </table>
+        <br />
+        { this.state.loggedin === -1 && <p>Your credentials could not be verified, please try again or use another email address.</p>}
+        { this.state.goodpassword === -1 && <p>Password does not match.</p>}
+        <button disabled={isDisabled} onClick={() => this.onSubmit()} type="primary">Register</button>
+    </div>
+    );
+    }
 }

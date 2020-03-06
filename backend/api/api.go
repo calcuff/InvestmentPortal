@@ -51,13 +51,13 @@ func Login(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
 	err := services.Login(creds)
 	if err != nil {
-		writeErrorResponse(w, http.StatusNotExtended, "Bad credentials")
+		writeErrorResponse(w, http.StatusOK, "Bad credentials")
 		return
 	}
 
 	fmt.Println("Returned to api")
 	writeOKResponse(w, creds)
-	fmt.Fprint(w) //,resp
+	fmt.Fprint(w) 
 }
 
 func populateModelFromHandler(w http.ResponseWriter, r *http.Request, params httprouter.Params, model interface{}) error {

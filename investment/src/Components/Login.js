@@ -1,13 +1,18 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 export default class Login extends Component {
+
     state = {
         email: '',
         password: '',
+        redirect: null,
+        loggedin: 0
       }
 
+      
       onChange = (e) => {
         this.setState({
           [e.target.name]: e.target.value,
@@ -28,14 +33,23 @@ export default class Login extends Component {
                 email: this.state.email,
                 password: this.state.password
             },{headers: headers})
-          .then(res =>
+          .then(res =>{
             console.log("Data :", res.data)
+            if ( res.data === true){
+              this.setState({ redirect: "/", loggedin: 1});
+            }else {
+                this.setState({loggedin: -1});
+              }
+          }
           ).catch((error) => 
             console.log("Errs", error)
         );
     }
 
       render() {
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+      }
         return (
           <div align="center">
                <div className="card"> </div>
@@ -71,6 +85,7 @@ export default class Login extends Component {
                 </tbody>
             </table>
             <br />
+            { this.state.loggedin === -1 && <p>Your login credentials could not be verified, please try again.</p>}
             <button onClick={() => this.onSubmit()} type="primary">Login</button>
           </div>
         );

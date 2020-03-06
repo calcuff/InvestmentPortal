@@ -22,7 +22,7 @@ class App extends Component{
     return (
       <React.Fragment>
         <NavBar/>
-        <Switch>
+        <Switch> 
           <Route exact path="/" component={Home}/>
           <Route exact path="/quotes" component={Quotes}/>
           <Route exact path="/portfolio" component={Portfolio}/>
@@ -30,7 +30,7 @@ class App extends Component{
           <Route exact path="/movers" component={Movers}/>
           {/*<Route exact path="/" component={ProductList}/>*/}
           <Route path="/details" component={Details}/>
-          <Route path="/login" component={Login}/>
+          <Route path="/login" component={Login} />
           <Route path="/foo" component={Foo}/>
           <Route path="/test" component={Test}/>
           <Route path="/register" component={Register} />
