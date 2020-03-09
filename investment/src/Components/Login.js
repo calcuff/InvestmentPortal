@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import UserProfile from './UserProfile';
 
 export default class Login extends Component {
 
@@ -12,7 +13,6 @@ export default class Login extends Component {
         loggedin: 0
       }
 
-      
       onChange = (e) => {
         this.setState({
           [e.target.name]: e.target.value,
@@ -36,6 +36,7 @@ export default class Login extends Component {
           .then(res =>{
             console.log("Data :", res.data)
             if ( res.data === true){
+              UserProfile.setName(this.state.email);
               this.setState({ redirect: "/", loggedin: 1});
             }else {
                 this.setState({loggedin: -1});

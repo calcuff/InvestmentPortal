@@ -3,6 +3,7 @@ import Title from './Title'
 import {Link} from 'react-router-dom'
 import axios from "axios";
 import { Redirect } from "react-router-dom";
+import UserProfile from './UserProfile';
 
 function validate(name, email, password, confpass){
     return {
@@ -49,6 +50,7 @@ export default class Register extends Component {
             .then(res =>{
                 console.log("Data :", res.data)
                 if ( res.data == true){
+                    UserProfile.setName(this.state.email);
                     this.setState({ redirect: "/", loggedin: 1});
                 }else {
                     this.setState({loggedin: -1});}

@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import Title from './Title'
 import {Link} from 'react-router-dom'
+import UserProfile from './UserProfile';
 
 export default class Home extends Component {
-
     render() {
         return (
             <React.Fragment>
+                
                 <div className="py-5">
                 <div className="container">
-                    <Title name="EXPLORE"/>
+                <p> Welcome {UserProfile.getName()}</p>
+                    <Title name="EXPLORE">{UserProfile.getName()}</Title>
                 </div>
                 </div>
                 <div className="container">
@@ -32,8 +34,6 @@ export default class Home extends Component {
                     <Title name="Market Movers"/>
                     </Link>
                 </div>
-
-            
             </React.Fragment>
         );
     }
