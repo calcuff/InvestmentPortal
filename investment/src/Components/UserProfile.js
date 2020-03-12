@@ -1,19 +1,29 @@
 
 var UserProfile = (function() {
     var full_name = "";
+    var symbols = "";
   
     var getName = function() {
-      return full_name;    // Or pull this from cookie/localStorage
+      return full_name;   
     };
   
     var setName = function(name) {
       full_name = name;     
-      // Also set this in cookie/localStorage
     };
+
+    var setTickers = function(tickers) {
+        symbols = tickers;
+    };
+
+    var getTickers = function(){
+        return symbols;
+    }
   
     return {
       getName: getName,
-      setName: setName
+      setName: setName,
+      setTickers: setTickers,
+      getTickers: getTickers
     }
   
   })();

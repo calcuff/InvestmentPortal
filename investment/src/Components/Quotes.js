@@ -3,6 +3,10 @@ import Title from './Title'
 import {Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
+import UserProfile from './UserProfile';
+import { Redirect } from "react-router-dom";
+import QuoteResults from './QuoteResults'
+import {Route} from 'react-router-dom';
 
 
 export default class Quotes extends Component {
@@ -13,7 +17,8 @@ export default class Quotes extends Component {
         isQueryLoading: true,
         isTickerLoading: true,
         queried: 0,
-        tickered: 0
+        tickered: 0,
+        redirect: null
     }
 
     onChange = (e) => {
@@ -23,36 +28,22 @@ export default class Quotes extends Component {
       }
 
     onTickerSubmit = async () => {
+
         console.log(this.state.symbols);
         var tickers = this.parseTicker();
         console.log("Before call, Tickers: ", tickers);
-
-        axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-quotes?region=US&lang=en&symbols="+tickers, {
-            headers: {
-                'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
-                'x-rapidapi-key' : '807803f5d0msh30ebe2386bcb87bp1d620djsnd4f62f748453',
-                'Content-Type': 'application/json' 
-            }
-        }).then(response =>{
-          this.setState({
-            completed: response.data,
-            isTickerLoading: false
-            //tickered: 1
-          });
-          console.log("Got data: ", response.data)
-          //console.log("Symbol1: ", this.state.completed.ResultSet.Result[0].symbol, this.state.completed.ResultSet.Result[0].name ); 
-        })
-        // If we catch any errors connecting, let's update accordingly
-        .catch(error => {
-            console.log("Error: " + error)
-        });
-    
+        
+        UserProfile.setTickers(tickers);
+        
+        if (tickers != ''){
+            this.setState({ redirect: "/quoteResults", queried: 1});
+        }
     }
 
     onQuerySubmit = async () => {
         console.log(this.state.query);
         var company = this.parseQuery();
-        console.log("Before call, Company: ", company);
+        console.log("Before call, Company:", company);
 
         axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/auto-complete?lang=en&region=US&query="+company, {
             headers: {
@@ -69,11 +60,11 @@ export default class Quotes extends Component {
           console.log("Got data: ", response.data)
           console.log("Symbol1: ", this.state.completed.ResultSet.Result[0].symbol, this.state.completed.ResultSet.Result[0].name ); 
         })
-        // If we catch any errors connecting, let's update accordingly
         .catch(error => {
             console.log("Error: " + error)
         });
     }
+
     parseTicker = () =>{
         var string = this.state.symbols;
         string = string.split(',');
@@ -100,13 +91,25 @@ export default class Quotes extends Component {
         return company;
     }
 
+    validate = function(tickers)  {
+        return {
+            tickers: tickers.length === 0
+        }
+    }
+
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+        }
+        const errors = this.validate(this.state.symbols);
+        const isDisabled = Object.keys(errors).some(x => errors[x]);
+
         if (this.state.tickered == 0){
         return (
             <React.Fragment>
                 <div className="py-5">
                     <div className="container">
-                        <Title name="Quotes"/>
+                        <Title name="Quotes"/>  
                     </div>
                 </div>
                 <div style={{display: "flex",justifyContent: "center",}}>
@@ -147,15 +150,13 @@ export default class Quotes extends Component {
 
                 { this.state.queried === 1 && this.state.isQueryLoading == false && <div className="container">
                     <div>Possible companies you were searching for:</div>
-                    {this.state.completed.ResultSet.Result.map((result => 
-                    <div class="card bg-info text-white">
-                    <div class="card-body" key={result.symbol} ></div>
-                    <h6 className="card-title">{result.symbol}</h6>
-                    <h6 className="card-title">{result.name}</h6>
-                    </div>))}
+                        {this.state.completed.ResultSet.Result.map((result => 
+                        <div className="card bg-info text-white" >
+                            <div className="card-body" key={result.symbol} ></div>
+                            <h6 className="card-title">{result.symbol}</h6>
+                            <h6 className="card-title">{result.name}</h6>
+                        </div>))}
                     </div>}
-      
-              
             </React.Fragment>
         );
         }

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 import UserProfile from './UserProfile';
+import Button from 'react-bootstrap/Button';
 
 export default class Login extends Component {
 
@@ -87,7 +88,7 @@ export default class Login extends Component {
             </table>
             <br />
             { this.state.loggedin === -1 && <p>Your login credentials could not be verified, please try again.</p>}
-            <button onClick={() => this.onSubmit()} type="primary">Login</button>
+            <Button onClick={() => this.onSubmit()} type="primary">Login</Button>
           </div>
         );
       }
