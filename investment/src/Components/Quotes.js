@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import Title from './Title'
-import {Link} from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import UserProfile from './UserProfile';
 import { Redirect } from "react-router-dom";
-import QuoteResults from './QuoteResults'
-import {Route} from 'react-router-dom';
 
 
 export default class Quotes extends Component {
@@ -35,7 +32,7 @@ export default class Quotes extends Component {
         
         UserProfile.setTickers(tickers);
         
-        if (tickers != ''){
+        if (tickers !== ''){
             this.setState({ redirect: "/quoteResults", queried: 1});
         }
     }
@@ -71,7 +68,7 @@ export default class Quotes extends Component {
         var tickers = '';
         for( var i=0; i < string.length; i++){
             tickers += string[i];
-            if(i != string.length-1){
+            if(i !== string.length-1){
                 tickers += "%252C";
             }
         }
@@ -84,7 +81,7 @@ export default class Quotes extends Component {
         var company = '';
         for( var i=0; i < string.length; i++){
             company += string[i];
-            if(i != string.length-1){
+            if(i !== string.length-1){
                 company += "%20";
             }
         }
@@ -104,7 +101,7 @@ export default class Quotes extends Component {
         const errors = this.validate(this.state.symbols);
         const isDisabled = Object.keys(errors).some(x => errors[x]);
 
-        if (this.state.tickered == 0){
+        if (this.state.tickered === 0){
         return (
             <React.Fragment>
                 <div className="py-5">
@@ -148,7 +145,7 @@ export default class Quotes extends Component {
                     <Button variant="secondary" onClick={() => this.onQuerySubmit()} type="primary">Auto-complete</Button>
                 </div>
 
-                { this.state.queried === 1 && this.state.isQueryLoading == false && <div className="container">
+                { this.state.queried === 1 && this.state.isQueryLoading === false && <div className="container">
                     <div>Possible companies you were searching for:</div>
                         {this.state.completed.ResultSet.Result.map((result => 
                         <div className="card bg-info text-white" >

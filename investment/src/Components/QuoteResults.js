@@ -45,10 +45,10 @@ export default class QuoteResults extends React.Component {
 
     
 
-    onSubmit(name, symbol, price )  {
+    onSubmit(name, symbol, price, quantity )  {
       var date = new Date().toDateString()
 
-      console.log("Buying...", name)
+      console.log("Buying...", name, symbol, price, quantity )
       console.log("User: ", UserProfile.getName())
 
       const headers = {'Content-Type': 'application/json' }
@@ -56,13 +56,13 @@ export default class QuoteResults extends React.Component {
                 {   name: name,
                     symbol: symbol,
                     price: price,
-                    quantity: 1,
+                    quantity: quantity,
                     holder: UserProfile.getName(),
                     purchaseDate: date
                 },{headers: headers})
             .then(res =>{
                 console.log("Data :", res.data)
-                if ( res.data == true){
+                if ( res.data === true){
                     console.log("Success you bought a stock!")
                 }else {
                   console.log("Error you don't have enough funds!")
@@ -70,6 +70,14 @@ export default class QuoteResults extends React.Component {
             }).catch((error) => console.log("Errs", error));
     }
 
+    onChange = (e) => {
+      if (e.target.value > -1){
+        this.setState({
+          [e.target.name]: parseInt(e.target.value),
+        });
+      }
+    }
+ 
     IncrementItem = () => {
           this.setState({
               quantity: this.state.quantity + 1 
@@ -78,19 +86,20 @@ export default class QuoteResults extends React.Component {
 
     DecreaseItem = () => {
           this.setState({ 
-            quantiy: this.state.quantity - 1 
-          });
+            quantiy: this.state.quantity - 1  
+          }); 
+          console.log(this.state.quantity)
     }
 
     render() {
         var tickers = UserProfile.getTickers()
         if (this.state.isLoading) {
-            {this.getQuotes()}
+            this.getQuotes()
             return (
               <div className="col">
                 Loading...
               </div>
-            );}else if (tickers == ''){
+            );}else if (tickers === ''){
                 return (
                     <div className="col">
                       No Symbols were inputted  ... Return to previous screen
@@ -108,13 +117,15 @@ export default class QuoteResults extends React.Component {
                     <div className="card-body" key={result.symbol} ></div>
                     <h6 className="card-title">{result.symbol}</h6>
                     <h6 className="card-title">{result.longName}</h6>
-                    <h6 className="card-title">${result.regularMarketPrice}</h6>
+                    <h6 className="card-title">Current Price: ${result.regularMarketPrice}</h6>
                       <div>
-                          <button onClick={this.DecreaseItem}>-</button>
-                          <input className="inputne" value={this.state.quantity} style={{textAlign:"center",width:"50px"}}/>
-                          <button onClick={this.IncrementItem}>+</button>
+                          {/* <button onClick={this.DecreaseItem}>-</button> */}
+                          <input name="quantity" value={this.state.quantity} style={{textAlign:"center",width:"50px"}} onChange={e => this.onChange(e)} id={result.symbol}/>
+                          
+                         
+                          {/* <button onClick={this.IncrementItem}>+</button> */}
                       </div>
-                    <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice)}>BUY
+                    <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice, this.state.quantity)}>BUY
                     </Button>
                     </div>))}
                 </div>

@@ -67,15 +67,15 @@ func Login(creds models.Creds) error {
 func Buy(opt models.Option) error {
 	fmt.Println("Buying in services")
 
-	// Get balance
 	balance, err := db.GetBalance(opt.Holder)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("Balance ", balance)
-	// Check for available funds
-	if balance < opt.Price {
+	quant := float64(opt.Quantity)
+	salePrice := opt.Price * quant
+
+	if balance < salePrice {
 		return errors.New("Not enough funds")
 	}
 
@@ -83,6 +83,10 @@ func Buy(opt models.Option) error {
 		return err
 	}
 
-	return nil
+	updatedBal := balance - salePrice
+	if err = db.UpdateBalance(updatedBal, opt.Holder); err != nil {
+		return err
+	}
 
+	return nil
 }

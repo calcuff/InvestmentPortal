@@ -179,3 +179,25 @@ func GetBalance(email string) (float64, error) {
 
 	return balance, nil
 }
+
+func UpdateBalance(updatedBalance float64, email string) error {
+	fmt.Println("Updating balance")
+
+	db := Init()
+
+	sqlStatement := `
+		UPDATE users
+		SET balance = $1
+		WHERE email = $2;`
+
+	_, err := db.Exec(sqlStatement, &updatedBalance, &email)
+	if err != nil {
+		return err
+	}
+
+	defer db.Close()
+
+	fmt.Println("Updated balance in repo")
+	return nil
+
+}
