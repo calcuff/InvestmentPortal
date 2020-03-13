@@ -11,7 +11,8 @@ export default class QuoteResults extends React.Component {
       isLoading: true,
       errors: null,
       rendered: false,
-      tickers: ''
+      tickers: '',
+      quantity: 1
     };
 
     getQuotes = async () =>{
@@ -42,7 +43,11 @@ export default class QuoteResults extends React.Component {
     
     }
 
+    
+
     onSubmit(name, symbol, price )  {
+      var date = new Date().toDateString()
+
       console.log("Buying...", name)
       console.log("User: ", UserProfile.getName())
 
@@ -51,7 +56,9 @@ export default class QuoteResults extends React.Component {
                 {   name: name,
                     symbol: symbol,
                     price: price,
-                    email: UserProfile.getName()
+                    quantity: 1,
+                    holder: UserProfile.getName(),
+                    purchaseDate: date
                 },{headers: headers})
             .then(res =>{
                 console.log("Data :", res.data)
@@ -61,7 +68,19 @@ export default class QuoteResults extends React.Component {
                   console.log("Error you don't have enough funds!")
                   }
             }).catch((error) => console.log("Errs", error));
-          }
+    }
+
+    IncrementItem = () => {
+          this.setState({
+              quantity: this.state.quantity + 1 
+          });
+    }
+
+    DecreaseItem = () => {
+          this.setState({ 
+            quantiy: this.state.quantity - 1 
+          });
+    }
 
     render() {
         var tickers = UserProfile.getTickers()
@@ -90,7 +109,13 @@ export default class QuoteResults extends React.Component {
                     <h6 className="card-title">{result.symbol}</h6>
                     <h6 className="card-title">{result.longName}</h6>
                     <h6 className="card-title">${result.regularMarketPrice}</h6>
-                    <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice)}>BUY</Button>
+                      <div>
+                          <button onClick={this.DecreaseItem}>-</button>
+                          <input className="inputne" value={this.state.quantity} style={{textAlign:"center",width:"50px"}}/>
+                          <button onClick={this.IncrementItem}>+</button>
+                      </div>
+                    <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice)}>BUY
+                    </Button>
                     </div>))}
                 </div>
             </React.Fragment>

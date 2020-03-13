@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
+	"strconv"
 
 	"../models"
 
@@ -44,13 +46,13 @@ func Register(user models.User) error {
 	}
 
 	db := Init()
-	stmt, err := db.Prepare("INSERT INTO users (name, email, role, phone, password) VALUES ($1, $2, $3, $4, $5)")
+	stmt, err := db.Prepare("INSERT INTO users (name, email, role, phone, password, balance) VALUES ($1, $2, $3, $4, $5, $6)")
 	if err != nil {
 		fmt.Println("error preparing: ", err)
 		return err
 	}
 
-	_, err = stmt.Query(&user.Name, &user.Email, &user.Role, &user.Phone, &user.Password)
+	_, err = stmt.Query(&user.Name, &user.Email, &user.Role, &user.Phone, &user.Password, 10000)
 
 	defer db.Close()
 
@@ -90,6 +92,29 @@ func Login(creds models.Creds) error {
 
 }
 
+func Buy(opt models.Option) error {
+	fmt.Println("buying in repo")
+
+	db := Init()
+
+	stmt, err := db.Prepare("INSERT INTO options (name, symbol, price, quantity, holder, date) VALUES ($1, $2, $3, $4, $5, $6)")
+	if err != nil {
+		fmt.Println("error preparing: ", err)
+		return err
+	}
+
+	_, err = stmt.Query(&opt.Name, &opt.Symbol, &opt.Price, &opt.Quantity, &opt.Holder, &opt.PurchaseDate)
+
+	defer db.Close()
+
+	if err != nil {
+		fmt.Println("ERROR Execing: ", err)
+		return err
+	}
+
+	fmt.Println("Bought in repo")
+	return nil
+}
 func ifExists(email string) error {
 	db := Init()
 
@@ -112,4 +137,45 @@ func ifExists(email string) error {
 		return nil
 	}
 
+}
+
+func GetBalance(email string) (float64, error) {
+	fmt.Println("Getting balance")
+	var balance float64
+	var user models.User
+	var id int
+
+	db := Init()
+
+	stmt, err := db.Prepare("select * from users where email = $1")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rows, err := stmt.Query(&email)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+	if rows.Next() {
+		err := rows.Scan(&id, &user.Name, &user.Email, &user.Role, &user.Phone, &user.Password, &user.Balance)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println("Balance in repo: ", user.Balance)
+	} else {
+		log.Println("Did not find user in database")
+	}
+
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if balance, err = strconv.ParseFloat(user.Balance, 64); err != nil {
+		return 0, err
+	}
+
+	return balance, nil
 }

@@ -25,7 +25,7 @@ func Register(w http.ResponseWriter, r *http.Request, params httprouter.Params) 
 	user := models.User{}
 
 	if err := populateModelFromHandler(w, r, params, &user); err != nil {
-		fmt.Println("Error populating model")
+		fmt.Println("Error populating registration")
 		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
 		return
 	}
@@ -44,7 +44,7 @@ func Login(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	creds := models.Creds{}
 
 	if err := populateModelFromHandler(w, r, params, &creds); err != nil {
-		fmt.Println("Error populating model")
+		fmt.Println("Error populating credentials")
 		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
 		return
 	}
@@ -57,7 +57,29 @@ func Login(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 
 	fmt.Println("Returned to api")
 	writeOKResponse(w, creds)
-	fmt.Fprint(w) 
+	fmt.Fprint(w)
+}
+
+func Buy(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Println("Buying in in api")
+
+	opt := models.Option{}
+
+	if err := populateModelFromHandler(w, r, params, &opt); err != nil {
+		fmt.Println("Error populating option")
+		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
+		return
+	}
+
+	err := services.Buy(opt)
+	if err != nil {
+		writeErrorResponse(w, http.StatusOK, "Not enough funds")
+		return
+	}
+
+	fmt.Println("Returned to api")
+	writeOKResponse(w, opt)
+	fmt.Fprint(w)
 }
 
 func populateModelFromHandler(w http.ResponseWriter, r *http.Request, params httprouter.Params, model interface{}) error {

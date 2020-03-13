@@ -22,10 +22,10 @@ func New() *App {
 func (a *App) Start() error {
 	// Set up new router
 	router := NewRouter(AllRoutes())
-	
+
 	// Enable CORS to make API accessible by client-side
 	handler := cors.Default().Handler(router)
-	
+
 	// Start server
 	fmt.Println("Starting server on :8080")
 	log.Fatal(http.ListenAndServe(":8080", handler))
@@ -49,6 +49,7 @@ func AllRoutes() models.Routes {
 		models.Route{"Summary", "GET", "/summary", api.Summary},
 		models.Route{"Register", "POST", "/register", api.Register},
 		models.Route{"Login", "POST", "/login", api.Login},
+		models.Route{"Buy", "POST", "/buy", api.Buy},
 	}
 	return routes
 }

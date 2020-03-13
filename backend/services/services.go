@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -61,4 +62,27 @@ func Login(creds models.Creds) error {
 		return err
 	}
 	return nil
+}
+
+func Buy(opt models.Option) error {
+	fmt.Println("Buying in services")
+
+	// Get balance
+	balance, err := db.GetBalance(opt.Holder)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Balance ", balance)
+	// Check for available funds
+	if balance < opt.Price {
+		return errors.New("Not enough funds")
+	}
+
+	if err := db.Buy(opt); err != nil {
+		return err
+	}
+
+	return nil
+
 }

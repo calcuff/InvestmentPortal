@@ -17,11 +17,21 @@ type User struct {
 	Role     string `json:"role"`
 	Phone    string `json:"phone"`
 	Password string `json:"password"`
+	Balance  string `json:"balance"`
 }
 
 type Creds struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type Option struct {
+	Name         string  `json:"name"`
+	Symbol       string  `json:"symbol"`
+	Price        float64 `json:"price"`
+	Quantity     int     `json:"quantity"`
+	Holder       string  `json:"holder"`
+	PurchaseDate string  `json:"purchaseDate"`
 }
 
 type JsonResponse struct {
