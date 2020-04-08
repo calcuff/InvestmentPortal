@@ -82,6 +82,31 @@ func Buy(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	fmt.Fprint(w)
 }
 
+func Portfolio(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Println("Portfolioing in in api")
+	portfolio := []models.Portfolio{}
+
+	creds := models.Creds{
+		Email: params.ByName("email"),
+	}
+
+	// if err := populateModelFromHandler(w, r, params, &creds); err != nil {
+	// 	fmt.Println("Error populating credentials")
+	// 	writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
+	// 	return
+	// }
+
+	portfolio, err := services.Portfolio(creds)
+
+	if err != nil {
+		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
+		return
+	}
+
+	writeOKDataResponse(w, portfolio)
+	fmt.Fprint(w)
+}
+
 func populateModelFromHandler(w http.ResponseWriter, r *http.Request, params httprouter.Params, model interface{}) error {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -114,4 +139,13 @@ func writeErrorResponse(w http.ResponseWriter, errorCode int, errorMsg string) {
 		NewEncoder(w).
 		Encode(&models.JsonErrorResponse{Error: &models.ApiError{Status: errorCode, Title: errorMsg}})
 	fmt.Fprintf(w, "false")
+}
+
+// Writes the response as a standard JSON response with StatusOK
+func writeOKDataResponse(w http.ResponseWriter, m interface{}) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(w).Encode(&models.JsonResponse{Data: m}); err != nil {
+		writeErrorResponse(w, http.StatusInternalServerError, "Internal Server Error")
+	}
 }

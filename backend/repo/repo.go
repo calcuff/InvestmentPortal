@@ -115,6 +115,54 @@ func Buy(opt models.Option) error {
 	fmt.Println("Bought in repo")
 	return nil
 }
+
+func Portfolio(email string) ([]models.Option, error) {
+	fmt.Println("folioing in repo")
+	var id int
+	var opt models.Option
+	options := make([]models.Option, 0)
+
+	db := Init()
+
+	stmt, err := db.Prepare("select * from options where holder = $1")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rows, err := stmt.Query(&email)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer rows.Close()
+	if !rows.Next() {
+		log.Println("Did not find user in database")
+	}
+	for {
+		if rows.Next() {
+			err := rows.Scan(&id, &opt.Name, &opt.Symbol, &opt.Price, &opt.Quantity, &opt.Holder, &opt.PurchaseDate)
+			if err != nil {
+				log.Fatal(err)
+			}
+			log.Println("Option Name ", opt.Name)
+			log.Println("Option holder ", opt.Holder)
+			options = append(options, opt)
+		} else {
+			break
+		}
+	}
+
+	// TODO: scan every row
+	// append option to list
+	// return to perform business logic to make portfolio in services
+
+	err = rows.Err()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return options, nil
+}
 func ifExists(email string) error {
 	db := Init()
 

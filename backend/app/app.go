@@ -50,6 +50,7 @@ func AllRoutes() models.Routes {
 		models.Route{"Register", "POST", "/register", api.Register},
 		models.Route{"Login", "POST", "/login", api.Login},
 		models.Route{"Buy", "POST", "/buy", api.Buy},
+		models.Route{"Portfolio", "GET", "/portfolio/:email", api.Portfolio},
 	}
 	return routes
 }

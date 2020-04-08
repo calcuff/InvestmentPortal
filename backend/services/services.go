@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"../models"
@@ -89,4 +90,40 @@ func Buy(opt models.Option) error {
 	}
 
 	return nil
+}
+
+func Portfolio(creds models.Creds) ([]models.Portfolio, error) {
+	fmt.Println("Portfolioing in services", creds.Email)
+
+	var options []models.Option
+	var portfolio []models.Portfolio
+
+	options, err := db.Portfolio(creds.Email)
+	if err != nil {
+		return portfolio, err
+	}
+
+	for _, option := range options {
+		entry, err := makePortfolio(option)
+		if err != nil {
+			return portfolio, err
+		}
+		log.Println("Entry name: ", entry.Name)
+		portfolio = append(portfolio, entry)
+	}
+
+	return portfolio, nil
+}
+
+func makePortfolio(option models.Option) (models.Portfolio, error) {
+	var entry models.Portfolio
+
+	entry = models.Portfolio{
+		Symbol:  option.Symbol,
+		Name:    option.Name,
+		Shares:  option.Quantity,
+		AvgCost: option.Price,
+	}
+
+	return entry, nil
 }

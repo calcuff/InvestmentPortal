@@ -34,6 +34,21 @@ type Option struct {
 	PurchaseDate string  `json:"purchaseDate"`
 }
 
+type Portfolio struct {
+	Symbol        string  `json:"symbol"`
+	Name          string  `json:"name"`
+	Price         float64 `json:"price"`
+	PercentChange string  `json:"percentChange"`
+	Change        string  `json:"change"`
+	Shares        int     `json:"shares"`
+	AvgCost       float64 `json:"avg_cost"`
+	TotalCost     string  `json:"total_cost"`
+	MarketValue   string  `json:"market_value"`
+	Gain          string  `json:"gain"`
+	DaysGain      string  `json:"days_gain"`
+	Return        string  `json:"return"`
+}
+
 type JsonResponse struct {
 	// Reserved field to add some meta information to the API response
 	Meta interface{} `json:"meta"`
