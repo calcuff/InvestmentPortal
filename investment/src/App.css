@@ -18,10 +18,14 @@ body{
   text-transform: uppercase;
 }
 
-.text-blue: {
+.text-blue:{
   color: var(--mainBlue);
 }
 
 .text-bright:{
   color: var(--lightBlue);
+}
+
+.text-white:{
+  color: var(--mainWhite)
 }

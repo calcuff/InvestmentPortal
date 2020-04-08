@@ -7,10 +7,11 @@ export default class Home extends Component {
     render() {
         return (
             <React.Fragment>
+                
                 <div className="py-5">
                 <div className="container">
                 <p> Welcome {UserProfile.getName()}</p>
-                    <Title name="EXPLORE">{UserProfile.getName()}</Title>
+                    <Title name="EXPLORE"></Title>
                 </div>
                 </div>
                 <div className="container">

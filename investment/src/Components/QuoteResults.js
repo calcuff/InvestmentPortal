@@ -63,6 +63,7 @@ export default class QuoteResults extends React.Component {
             .then(res =>{
                 console.log("Data :", res.data)
                 if ( res.data === true){
+                    alert("Success you have just bought stock options!");
                     console.log("Success you bought a stock!")
                 }else {
                   console.log("Error you don't have enough funds!")

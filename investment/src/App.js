@@ -17,6 +17,7 @@ import Foo from './Components/Foo'
 import Test from './Components/Test'
 import Register from './Components/Register'
 import QuoteResults from './Components/QuoteResults';
+import money from './images/money.jpg'
 
 class App extends Component{
   render() {
@@ -24,20 +25,22 @@ class App extends Component{
       <React.Fragment>
         <NavBar/>
         <Switch> 
-          <Route exact path="/" component={Home}/>
-          <Route exact path="/quotes" component={Quotes}/>
-          <Route exact path="/portfolio" component={Portfolio}/>
-          <Route exact path="/summary" component={Summary}/>
-          <Route exact path="/movers" component={Movers}/>
-          {/*<Route exact path="/" component={ProductList}/>*/}
-          <Route path="/details" component={Details}/>
-          <Route path="/login" component={Login} />
-          <Route path="/foo" component={Foo}/>
-          <Route path="/test" component={Test}/>
-          <Route path="/register" component={Register} />
-          <Route path="/quoteResults" component={QuoteResults}/>
-          <Route component={Default}/>
-          </Switch>  
+          <div  style={{ backgroundImage:`url(${money})`, backgroundRepeat:"no-repeat"}}>
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/quotes" component={Quotes}/>
+            <Route exact path="/portfolio" component={Portfolio}/>
+            <Route exact path="/summary" component={Summary}/>
+            <Route exact path="/movers" component={Movers}/>
+            {/*<Route exact path="/" component={ProductList}/>*/}
+            <Route path="/details" component={Details}/>
+            <Route path="/login" component={Login} />
+            <Route path="/foo" component={Foo}/>
+            <Route path="/test" component={Test}/>
+            <Route path="/register" component={Register} />
+            <Route path="/quoteResults" component={QuoteResults}/>
+            <Route component={Default}/>
+          </div>
+        </Switch>  
       </React.Fragment>
     );
   }

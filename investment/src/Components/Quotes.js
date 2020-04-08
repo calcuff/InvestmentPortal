@@ -110,7 +110,7 @@ export default class Quotes extends Component {
                     </div>
                 </div>
                 <div style={{display: "flex",justifyContent: "center",}}>
-                    <label >
+                    <label style={{color: "blue", fontSize: "24px"}} >
                         Enter comma separated stock symbols to get quotes
                     </label>
                 </div>
@@ -128,7 +128,7 @@ export default class Quotes extends Component {
                 </div>
                 <br></br>
                 <div style={{display: "flex",justifyContent: "center",}}>
-                    <label >
+                    <label style={{color: "blue", fontSize: "24px"}}>
                        Search by company name to get auto-complete results for trading symbols
                     </label>
                 </div>
