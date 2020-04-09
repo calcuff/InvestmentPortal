@@ -13,13 +13,7 @@ export default class NavBar extends Component{
                <Link to="/" className="nav-link">
                     CUFFSTOCK
                </Link>
-               <ul className="navbar-nav align-items-center">
-                   <li className="nav-item ml-5">
-                       <Link to="/" className="nav-link">
-                           products
-                       </Link>
-                   </li>
-               </ul>
+            
                <Link to="/login" className="ml-auto">
                    <ButtonContainer>
                        <span className="mr-2">
