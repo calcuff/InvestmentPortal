@@ -6,14 +6,14 @@ class Table extends Component {
       super(props) 
       this.state = {
          options: [
-            { Symbol:'GOOG', Name:  'Google', Price: '$1219.73', percentchange: '+9.40165%', Change: '+$104.81995', Shares: 10, Avg_cost: '$1200' , Total_cost:'$12000', Market_value: '$12197.3', Gain: '+$197.3', Days_gain:'-$25', Return:'+10.3%'}
+            { Symbol:'GOOG', Name:  'Google', Price: '$1219.73', percentchange: '+9.40165%', Change: '+$104.81995', Shares: 10, Avg_cost: '$1200' , Total_cost:'$12000', Market_value: '$12197.3', Return:'+$197.3'}
          ]
       }
    }
 
    renderTableData() {
     return this.state.options.map((option, index) => {
-       const { Symbol, Name, Price, percentchange, Change, Shares, Avg_cost, Total_cost, Market_value, Gain, Days_gain, Return  } = option //destructuring
+       const { Symbol, Name, Price, percentchange, Change, Shares, Avg_cost, Total_cost, Market_value,  Return  } = option //destructuring
        return (
           <tr key={Symbol}>
              <td>{Symbol}</td>
@@ -25,8 +25,6 @@ class Table extends Component {
              <td>{Avg_cost}</td>
              <td>{Total_cost}</td>
              <td>{Market_value}</td>
-             <td>{Gain}</td>
-             <td>{Days_gain}</td>
              <td>{Return}</td>
           </tr>
        )

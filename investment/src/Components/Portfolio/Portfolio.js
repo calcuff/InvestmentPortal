@@ -8,8 +8,13 @@ import UserProfile from '../UserProfile';
 import axios from "axios";
 
 export default class Portfolio extends Component {
-    state = {
-        queried: false
+    constructor(props){
+        super(props);
+        this.state = {
+            queried: false,
+            portfolioData : null,
+            color: 'red'
+        }
     }
 
     onSubmit = async () => {
@@ -24,11 +29,11 @@ export default class Portfolio extends Component {
         axios.get('http://localhost:8080/portfolio/' + creds.email, 
         {headers: headers}).then(response =>{
           this.setState({
-            completed: response.data,
+            portfolioData: response.data,
             queried: true,
           });
-          console.log("Got data: ", this.state.completed)
-          console.log("Symbol1: ", this.state.completed.data[0].symbol, this.state.completed.data[0].name ); 
+          console.log("Got data: ", this.state.portfolioData)
+          console.log("Symbol1: ", this.state.portfolioData.data[0].symbol, this.state.portfolioData.data[0].name ); 
         })
         .catch(error => {
             console.log("Error: " + error)
@@ -48,10 +53,10 @@ export default class Portfolio extends Component {
                             <Title name="Portfolio"/>
                         </div>
                         {/* {this.onSubmit} */}
-                        <Headers></Headers>
+                        <Headers />
                     
                     </div> 
-                    <DataTable/>
+                    <DataTable portfolioData={this.state.portfolioData}/>
                 </div>
             </React.Fragment>
         );

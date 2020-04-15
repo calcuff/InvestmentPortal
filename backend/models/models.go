@@ -34,19 +34,22 @@ type Option struct {
 	PurchaseDate string  `json:"purchaseDate"`
 }
 
+type CurrentQuote struct {
+	Symbol string  `json:"symbol"`
+	Price  float64 `json:"price"`
+}
+
 type Portfolio struct {
 	Symbol        string  `json:"symbol"`
 	Name          string  `json:"name"`
 	Price         float64 `json:"price"`
-	PercentChange string  `json:"percentChange"`
-	Change        string  `json:"change"`
+	PercentChange float64 `json:"percentChange"`
+	Change        float64 `json:"change"`
 	Shares        int     `json:"shares"`
 	AvgCost       float64 `json:"avg_cost"`
-	TotalCost     string  `json:"total_cost"`
-	MarketValue   string  `json:"market_value"`
-	Gain          string  `json:"gain"`
-	DaysGain      string  `json:"days_gain"`
-	Return        string  `json:"return"`
+	TotalCost     float64 `json:"total_cost"`
+	MarketValue   float64 `json:"market_value"`
+	Return        float64 `json:"return"`
 }
 
 type JsonResponse struct {
@@ -116,4 +119,75 @@ type RegularMarketPrice struct {
 type RegularMarketPreviousClose struct {
 	Raw float64 `json:"raw"`
 	Fmt string  `json:"fmt"`
+}
+
+type MyJsonName struct {
+	QuoteResponse struct {
+		Error  interface{} `json:"error"`
+		Result []struct {
+			Ask                           float64  `json:"ask"`
+			AskSize                       int64    `json:"askSize"`
+			AverageDailyVolume3Month      int64    `json:"averageDailyVolume3Month"`
+			Beta                          float64  `json:"beta"`
+			Bid                           float64  `json:"bid"`
+			BidSize                       int64    `json:"bidSize"`
+			Components                    []string `json:"components"`
+			Currency                      string   `json:"currency"`
+			DividendRate                  float64  `json:"dividendRate"`
+			DividendYield                 float64  `json:"dividendYield"`
+			DividendsPerShare             float64  `json:"dividendsPerShare"`
+			EarningsTimestamp             int64    `json:"earningsTimestamp"`
+			EarningsTimestampEnd          int64    `json:"earningsTimestampEnd"`
+			EarningsTimestampStart        int64    `json:"earningsTimestampStart"`
+			EpsTrailingTwelveMonths       float64  `json:"epsTrailingTwelveMonths"`
+			EsgPopulated                  bool     `json:"esgPopulated"`
+			Exchange                      string   `json:"exchange"`
+			ExchangeDataDelayedBy         int64    `json:"exchangeDataDelayedBy"`
+			ExchangeTimezoneName          string   `json:"exchangeTimezoneName"`
+			ExchangeTimezoneShortName     string   `json:"exchangeTimezoneShortName"`
+			FiftyTwoWeekHigh              float64  `json:"fiftyTwoWeekHigh"`
+			FiftyTwoWeekHighChange        float64  `json:"fiftyTwoWeekHighChange"`
+			FiftyTwoWeekHighChangePercent float64  `json:"fiftyTwoWeekHighChangePercent"`
+			FiftyTwoWeekLow               float64  `json:"fiftyTwoWeekLow"`
+			FiftyTwoWeekLowChange         float64  `json:"fiftyTwoWeekLowChange"`
+			FiftyTwoWeekLowChangePercent  float64  `json:"fiftyTwoWeekLowChangePercent"`
+			FiftyTwoWeekRange             string   `json:"fiftyTwoWeekRange"`
+			FirstTradeDateMilliseconds    int64    `json:"firstTradeDateMilliseconds"`
+			FullExchangeName              string   `json:"fullExchangeName"`
+			GmtOffSetMilliseconds         int64    `json:"gmtOffSetMilliseconds"`
+			Language                      string   `json:"language"`
+			LongName                      string   `json:"longName"`
+			Market                        string   `json:"market"`
+			MarketCap                     int64    `json:"marketCap"`
+			MarketState                   string   `json:"marketState"`
+			MessageBoardID                string   `json:"messageBoardId"`
+			PageViews                     struct {
+				LongTermTrend  string `json:"longTermTrend"`
+				MidTermTrend   string `json:"midTermTrend"`
+				ShortTermTrend string `json:"shortTermTrend"`
+			} `json:"pageViews"`
+			PriceHint                  int64   `json:"priceHint"`
+			QuoteSourceName            string  `json:"quoteSourceName"`
+			QuoteType                  string  `json:"quoteType"`
+			Region                     string  `json:"region"`
+			RegularMarketChange        float64 `json:"regularMarketChange"`
+			RegularMarketChangePercent float64 `json:"regularMarketChangePercent"`
+			RegularMarketDayHigh       float64 `json:"regularMarketDayHigh"`
+			RegularMarketDayLow        float64 `json:"regularMarketDayLow"`
+			RegularMarketDayRange      string  `json:"regularMarketDayRange"`
+			RegularMarketOpen          float64 `json:"regularMarketOpen"`
+			RegularMarketPreviousClose float64 `json:"regularMarketPreviousClose"`
+			RegularMarketPrice         float64 `json:"regularMarketPrice"`
+			RegularMarketTime          int64   `json:"regularMarketTime"`
+			RegularMarketVolume        int64   `json:"regularMarketVolume"`
+			SharesOutstanding          int64   `json:"sharesOutstanding"`
+			ShortName                  string  `json:"shortName"`
+			SourceInterval             int64   `json:"sourceInterval"`
+			Symbol                     string  `json:"symbol"`
+			TargetPriceMean            float64 `json:"targetPriceMean"`
+			Tradeable                  bool    `json:"tradeable"`
+			TrailingPE                 float64 `json:"trailingPE"`
+			Triggerable                bool    `json:"triggerable"`
+		} `json:"result"`
+	} `json:"quoteResponse"`
 }
