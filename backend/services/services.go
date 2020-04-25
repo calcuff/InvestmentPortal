@@ -131,8 +131,8 @@ func makePortfolio(currentQuotes []models.CurrentQuote, groupedOpts []models.Por
 		entry.Symbol = option.Symbol
 		entry.Name = option.Name
 		entry.Shares = option.Shares
-		entry.AvgCost = option.TotalCost / float64(option.Shares) 
-		
+		entry.AvgCost = math.Round(option.TotalCost/float64(option.Shares)*100) / 100
+
 		for _, quote := range currentQuotes {
 			if option.Symbol == quote.Symbol {
 				entry.Price = quote.Price
@@ -142,7 +142,7 @@ func makePortfolio(currentQuotes []models.CurrentQuote, groupedOpts []models.Por
 		entry.PercentChange = calcPercentChange(entry.Price, entry.AvgCost)
 		entry.Change = math.Round((entry.Price-entry.AvgCost)*100) / 100
 		entry.TotalCost = option.TotalCost
-		entry.MarketValue = entry.Price * float64(entry.Shares)
+		entry.MarketValue = math.Round(entry.Price*float64(entry.Shares)*100) / 100
 		entry.Return = math.Round((entry.MarketValue-entry.TotalCost)*100) / 100
 
 		log.Println("Entry name: ", entry.Name)
@@ -244,4 +244,13 @@ func group(options []models.Option) []models.Portfolio {
 	}
 
 	return retPortfolio
+}
+
+func Balance(creds models.Creds) (float64, error) {
+	balance, err := db.GetBalance(creds.Email)
+	if err != nil {
+		return 0, err
+	}
+
+	return math.Round(balance*100) / 100, nil
 }

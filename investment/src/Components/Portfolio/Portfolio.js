@@ -11,7 +11,8 @@ export default class Portfolio extends Component {
     constructor(props){
         super(props);
         this.state = {
-            queried: false,
+            user: null,
+            isLoading: true,
             portfolioData : null,
             color: 'red'
         }
@@ -23,6 +24,8 @@ export default class Portfolio extends Component {
             password: ''
           };
 
+
+
         console.log("Getting portfolio..", creds)
         const headers = {'Content-Type': 'application/json' }
 
@@ -30,8 +33,10 @@ export default class Portfolio extends Component {
         {headers: headers}).then(response =>{
           this.setState({
             portfolioData: response.data,
-            queried: true,
+            isLoading: false,
+            user: creds.email,
           });
+          console.log("The user is ", this.state.user)
           console.log("Got data: ", this.state.portfolioData)
           console.log("Symbol1: ", this.state.portfolioData.data[0].symbol, this.state.portfolioData.data[0].name ); 
         })
@@ -40,11 +45,20 @@ export default class Portfolio extends Component {
         })
     }
 
+    componentDidMount() {
+        this.onSubmit();
+      }
+
 
     render() {
-        if (!this.state.queried){
-            this.onSubmit()
-        }
+        const { isLoading, color, portfolioData} = this.state;
+        if (isLoading) {
+            return (
+              <div className="col">
+                Loading...
+              </div>
+            );}
+            else { 
         return (
             <React.Fragment>
                 <div  style={{ backgroundImage:`url(${data})`, backgroundSize:"cover"}}>
@@ -53,12 +67,14 @@ export default class Portfolio extends Component {
                             <Title name="Portfolio"/>
                         </div>
                         {/* {this.onSubmit} */}
-                        <Headers />
+                        <Headers user={this.state.user} portfolioData={this.state.portfolioData}/>
                     
                     </div> 
                     <DataTable portfolioData={this.state.portfolioData}/>
                 </div>
             </React.Fragment>
         );
+            }
+        
     }
 }

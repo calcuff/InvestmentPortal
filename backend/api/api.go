@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"../models"
@@ -90,12 +91,6 @@ func Portfolio(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 		Email: params.ByName("email"),
 	}
 
-	// if err := populateModelFromHandler(w, r, params, &creds); err != nil {
-	// 	fmt.Println("Error populating credentials")
-	// 	writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
-	// 	return
-	// }
-
 	portfolio, err := services.Portfolio(creds)
 
 	if err != nil {
@@ -105,6 +100,22 @@ func Portfolio(w http.ResponseWriter, r *http.Request, params httprouter.Params)
 
 	writeOKDataResponse(w, portfolio)
 	fmt.Fprint(w)
+}
+
+func Balance(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Println("Gteting balance in in api")
+
+	creds := models.Creds{
+		Email: params.ByName("email"),
+	}
+	log.Println("EMail : ", creds.Email)
+	balance, err := services.Balance(creds)
+	if err != nil {
+		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
+		return
+	}
+
+	writeOKDataResponse(w, balance)
 }
 
 func populateModelFromHandler(w http.ResponseWriter, r *http.Request, params httprouter.Params, model interface{}) error {

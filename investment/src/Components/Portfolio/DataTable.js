@@ -11,24 +11,26 @@ class Table extends Component {
       }
    }
 
+
    renderTableData() {
-    return this.state.options.map((option, index) => {
-       const { Symbol, Name, Price, percentchange, Change, Shares, Avg_cost, Total_cost, Market_value,  Return  } = option //destructuring
-       return (
-          <tr key={Symbol}>
-             <td>{Symbol}</td>
-             <td>{Name}</td>
-             <td>{Price}</td>
-             <td>{percentchange}</td>
-             <td>{Change}</td>
-             <td>{Shares}</td>
-             <td>{Avg_cost}</td>
-             <td>{Total_cost}</td>
-             <td>{Market_value}</td>
-             <td>{Return}</td>
+      console.log("Data in DataTable: ", this.props.portfolioData)
+      return this.props.portfolioData.data.map((option, index) => {
+
+         return (
+          <tr key={option.symbol}>
+             <td>{option.symbol}</td>
+             <td>{option.name}</td>
+             <td>$ {option.price}</td>
+             <td>{option.percentChange} %</td>
+             <td>$ {option.change}</td>
+             <td>{option.shares}</td>
+             <td>$ {option.avg_cost}</td>
+             <td>$ {option.total_cost}</td>
+             <td>$ {option.market_value}</td>
+             <td>$ {option.return}</td>
           </tr>
        )
-    })
+      })
     }
 
     renderTableHeader() {
@@ -43,7 +45,7 @@ class Table extends Component {
       return (
             <div>
             <h1 style={{marginLeft:"50px", color:"white"}}>My Portfolio</h1>
-            <table id='options'>
+            <table id='options' style={{backgroundColor: "white"}}>
                <tbody>
                <tr>{this.renderTableHeader()}</tr>
                   {this.renderTableData()}
