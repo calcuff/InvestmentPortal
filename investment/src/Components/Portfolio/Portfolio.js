@@ -14,7 +14,6 @@ export default class Portfolio extends Component {
             user: null,
             isLoading: true,
             portfolioData : null,
-            color: 'red'
         }
     }
 
@@ -51,7 +50,7 @@ export default class Portfolio extends Component {
 
 
     render() {
-        const { isLoading, color, portfolioData} = this.state;
+        const { isLoading, portfolioData} = this.state;
         if (isLoading) {
             return (
               <div className="col">

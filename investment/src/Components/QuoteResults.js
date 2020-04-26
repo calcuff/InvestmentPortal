@@ -87,7 +87,7 @@ export default class QuoteResults extends React.Component {
 
     DecreaseItem = () => {
           this.setState({ 
-            quantiy: this.state.quantity - 1  
+            quantity: this.state.quantity - 1  
           }); 
           console.log(this.state.quantity)
     }
@@ -120,11 +120,9 @@ export default class QuoteResults extends React.Component {
                     <h6 className="card-title">{result.longName}</h6>
                     <h6 className="card-title">Current Price: ${result.regularMarketPrice}</h6>
                       <div>
-                          {/* <button onClick={this.DecreaseItem}>-</button> */}
+                          <button onClick={this.DecreaseItem}>-</button>
                           <input name="quantity" value={this.state.quantity} style={{textAlign:"center",width:"50px"}} onChange={e => this.onChange(e)} id={result.symbol}/>
-                          
-                         
-                          {/* <button onClick={this.IncrementItem}>+</button> */}
+                          <button onClick={this.IncrementItem}>+</button>
                       </div>
                     <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice, this.state.quantity)}>BUY
                     </Button>
