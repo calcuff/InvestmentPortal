@@ -80,7 +80,7 @@ export default class Header extends Component {
                  <div className="row">
                         <div className="col-sm-3">
                             <div className="card text-white bg-success mb-3" style={{marginLeft:"50px", maxWidth:"20rem",height:"150px"}}>
-                                <div className="card-header"> ${this.state.dollarReturn}</div>
+                                <div className="card-header"> $ {this.state.dollarReturn}</div>
                                 <div className="card-body">
                                     <p className="card-text">Overall Return</p>
                                     <h5 className="card-title">{this.state.percentReturn}%</h5>
@@ -93,7 +93,7 @@ export default class Header extends Component {
                                 <div className="card-header">Portfolio Cost</div>
                                 <div className="card-body">
                                     <p className="card-text"> </p>
-                                    <h5 className="card-title" id="portfolioCost">${this.state.portfolioCost}</h5>
+                                    <h5 className="card-title" id="portfolioCost">$ {this.state.portfolioCost}</h5>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@ export default class Header extends Component {
                                 <div className="card-header">Portfolio Value</div>
                                 <div className="card-body">
                                     <p className="card-text"> </p>
-                                    <h5 className="card-title">${this.state.marketValue}</h5>
+                                    <h5 className="card-title">$ {this.state.marketValue}</h5>
                                 </div>
                             </div>
                         </div>

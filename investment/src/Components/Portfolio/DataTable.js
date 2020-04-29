@@ -3,6 +3,8 @@ import './DataTable.css'
 import Button from 'react-bootstrap/Button'
 import Dialog from 'react-dialog'
 import Modal from 'react-bootstrap/Modal'
+import UserProfile from '../UserProfile';
+import axios from "axios";
 
 
 class Table extends Component {
@@ -13,17 +15,58 @@ class Table extends Component {
          isDialogOpen: false,
          options: [
             { Symbol:'GOOG', Name:  'Google', Price: '$1219.73', percentchange: '+9.40165%', Change: '+$104.81995', Shares: 10, Avg_cost: '$1200' , Total_cost:'$12000', Market_value: '$12197.3', Return:'+$197.3', Sell:''}
-         ]
+         ],
+         name: 'test',
+         shares: 0,
+         price: 0
       }
    }
 
-   // openDialog = () => this.setState({ isDialogOpen: true })
    openDialog(name, price, shares) {
-      alert(`hello, ${price}`); 
-      this.setState({ isDialogOpen: true });
+      this.setState({ 
+         isDialogOpen: true,
+         name: name,
+         shares: shares,
+         price: price
+       });        
    }
  
    handleClose = () => this.setState({ isDialogOpen: false })
+
+   sell = async () => {
+      const creds = {
+         email: UserProfile.getName(),
+         password: ''
+       };
+
+       console.log("Selling option by " + creds.email);
+
+       const headers = {'Content-Type': 'application/json' }
+
+       axios.post('http://localhost:8080/sell', 
+       {
+           email: this.state.email,
+           password: this.state.password,
+           company: this.state.name,
+           shares: this.state.shares,
+           price: this.state.price
+       },{headers: headers})
+     .then(res =>{
+       console.log("Data :", res.data)
+       if ( res.data === true){
+         console.log("SOLD, do other stuff");
+         // UserProfile.setName(this.state.email);
+         // this.setState({ redirect: "/", loggedin: 1});
+       }else {
+         console.log("sold FAILED, do other stuff");
+         //   this.setState({loggedin: -1});
+         }
+     }
+     ).catch((error) => 
+       console.log("Errs", error)
+   );
+
+   }
 
 
    renderTableData() {
@@ -43,7 +86,6 @@ class Table extends Component {
              <td>$ {option.market_value}</td>
              <td>$ {option.return}</td>
              <td>
-                {/* <Button onClick={this.openDialog}>SELL</Button> */}
                 <Button onClick={() => this.openDialog(option.name, option.price, option.shares)}>SELL</Button>
                 {
                     this.state.isDialogOpen &&
@@ -54,6 +96,7 @@ class Table extends Component {
                             [{ 
                               text:"Sell",
                               className: "button",
+                              onClick: () => this.sell()
                            },
                            {
                                 text: "Close",
@@ -61,12 +104,12 @@ class Table extends Component {
                             }]
                         }
                         >
-                        <h1>{option.name}</h1>
-                        <h2>Sell Price: ${option.price}</h2>
+                        <h2>{this.state.name}</h2>
+                        <h3>Sell Price: ${this.state.price}</h3>
                         <p>Quantity</p>
                         <div>
                            <button onClick={this.DecreaseItem}>-</button>
-                           <input type="number" name="quantity" value={this.state.quantity} style={{textAlign:"center",width:"50px"}} onChange={e => this.onChange(e)} id={option.symbol} max={option.shares}/>
+                           <input type="number" name="quantity" value={this.state.quantity} style={{textAlign:"center",width:"50px"}} onChange={e => this.onChange(e)} id={option.symbol} max={this.state.shares}/>
                            <button onClick={this.IncrementItem}>+</button>
                         </div>
                     </Dialog>
