@@ -36,7 +36,6 @@ func Register(w http.ResponseWriter, r *http.Request, params httprouter.Params) 
 		writeErrorResponse(w, http.StatusOK, "Could not register")
 		return
 	}
-	fmt.Println("Returned to api")
 	writeOKResponse(w, user)
 }
 
@@ -56,7 +55,6 @@ func Login(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		return
 	}
 
-	fmt.Println("Returned to api")
 	writeOKResponse(w, creds)
 	fmt.Fprint(w)
 }
@@ -78,7 +76,6 @@ func Buy(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		return
 	}
 
-	fmt.Println("Returned to api")
 	writeOKResponse(w, opt)
 	fmt.Fprint(w)
 }
@@ -116,6 +113,29 @@ func Balance(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	}
 
 	writeOKDataResponse(w, balance)
+}
+
+//Sell handles a call from the frontend to sell a number of options and add the balance to their account
+func Sell(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
+	fmt.Println("Selling in in api")
+
+	opt := models.Option{}
+
+	if err := populateModelFromHandler(w, r, params, &opt); err != nil {
+		fmt.Println("Error populating option")
+		writeErrorResponse(w, http.StatusBadRequest, "Error with submitted body")
+		return
+	}
+
+	log.Println("Got model", opt.Holder)
+	err := services.Sell(opt)
+	if err != nil {
+		writeErrorResponse(w, http.StatusOK, "Something bad happened")
+		return
+	}
+
+	writeOKResponse(w, opt)
+	fmt.Fprint(w)
 }
 
 func populateModelFromHandler(w http.ResponseWriter, r *http.Request, params httprouter.Params, model interface{}) error {

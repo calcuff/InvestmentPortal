@@ -46,7 +46,7 @@ export default class QuoteResults extends React.Component {
     
 
     onSubmit(name, symbol, price, quantity )  {
-      var date = new Date().toDateString()
+      var date = new Date().toISOString();
 
       console.log("Buying...", name, symbol, price, quantity )
       console.log("User: ", UserProfile.getName())

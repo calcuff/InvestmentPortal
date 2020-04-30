@@ -254,3 +254,29 @@ func Balance(creds models.Creds) (float64, error) {
 
 	return math.Round(balance*100) / 100, nil
 }
+
+func Sell(opt models.Option) error {
+	fmt.Println("Selling in services")
+
+	err := db.RemoveOptions(opt)
+
+	if err != nil {
+		return err
+	}
+
+	// update balance
+	balance, err := db.GetBalance(opt.Holder)
+	if err != nil {
+		return err
+	}
+
+	log.Println("Balance before ", balance)
+	balance += (opt.Price * float64(opt.Quantity))
+	log.Println("Balance after ", balance)
+
+	if err = db.UpdateBalance(balance, opt.Holder); err != nil {
+		return err
+	}
+
+	return nil
+}

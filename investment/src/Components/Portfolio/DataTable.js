@@ -18,38 +18,43 @@ class Table extends Component {
          ],
          name: 'test',
          shares: 0,
-         price: 0
+         price: 0,
+         symbol: ''
       }
    }
 
-   openDialog(name, price, shares) {
+   openDialog(name, price, shares, symbol) {
       this.setState({ 
          isDialogOpen: true,
          name: name,
          shares: shares,
-         price: price
+         price: price,
+         symbol: symbol
        });        
    }
  
    handleClose = () => this.setState({ isDialogOpen: false })
 
    sell = async () => {
+      var date = new Date().toISOString();
       const creds = {
          email: UserProfile.getName(),
          password: ''
        };
 
        console.log("Selling option by " + creds.email);
+       console.log("Selling option(s) " + this.state.quantity);
 
        const headers = {'Content-Type': 'application/json' }
 
        axios.post('http://localhost:8080/sell', 
        {
-           email: this.state.email,
-           password: this.state.password,
-           company: this.state.name,
-           shares: this.state.shares,
-           price: this.state.price
+         name: this.state.name,  
+         symbol: this.state.symbol,
+         price: this.state.price,
+         quantity: this.state.quantity,
+         holder: creds.email,
+         purchaseDate: date
        },{headers: headers})
      .then(res =>{
        console.log("Data :", res.data)
@@ -86,7 +91,7 @@ class Table extends Component {
              <td>$ {option.market_value}</td>
              <td>$ {option.return}</td>
              <td>
-                <Button onClick={() => this.openDialog(option.name, option.price, option.shares)}>SELL</Button>
+                <Button onClick={() => this.openDialog(option.name, option.price, option.shares, option.symbol)}>SELL</Button>
                 {
                     this.state.isDialogOpen &&
                     <Dialog

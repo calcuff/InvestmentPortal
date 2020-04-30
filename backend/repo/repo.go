@@ -152,10 +152,6 @@ func Portfolio(email string) ([]models.Option, error) {
 		}
 	}
 
-	// TODO: scan every row
-	// append option to list
-	// return to perform business logic to make portfolio in services
-
 	err = rows.Err()
 	if err != nil {
 		log.Fatal(err)
@@ -163,6 +159,7 @@ func Portfolio(email string) ([]models.Option, error) {
 
 	return options, nil
 }
+
 func ifExists(email string) error {
 	db := Init()
 
@@ -248,4 +245,70 @@ func UpdateBalance(updatedBalance float64, email string) error {
 	fmt.Println("Updated balance in repo")
 	return nil
 
+}
+
+func RemoveOptions(opt models.Option) error {
+	var id int
+	var dbOpt models.Option
+	fmt.Println("Removing shares in DB")
+
+	db := Init()
+
+	// sort options by date FIFO
+	stmt, err := db.Prepare("select * from options where holder = $1 and symbol = $2 ORDER BY date")
+
+	rows, err := stmt.Query(&opt.Holder, &opt.Symbol)
+	if err != nil {
+		fmt.Println("ERROR IN REPO: ", err)
+		return err
+	}
+
+	defer rows.Close()
+	defer db.Close()
+
+	for opt.Quantity > 0 {
+		if rows.Next() {
+			err := rows.Scan(&id, &dbOpt.Name, &dbOpt.Symbol, &dbOpt.Price, &dbOpt.Quantity, &dbOpt.Holder, &dbOpt.PurchaseDate)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			//  if amount selling is less than this position, update DB and return
+			if opt.Quantity < dbOpt.Quantity {
+				log.Println("Updating # of shares in DB")
+
+				dbOpt.Quantity -= opt.Quantity
+				stmt, _ := db.Prepare("UPDATE options SET quantity = $1 WHERE id = $2;")
+
+				rows, err := stmt.Query(&dbOpt.Quantity, &id)
+				if err != nil {
+					fmt.Println("ERROR IN REPO: ", err)
+					return err
+				}
+
+				defer rows.Close()
+
+				return nil
+			} else { // We are selling more shares than this position, delete it and move on to next
+				log.Println("DELETING row from DB")
+
+				opt.Quantity -= dbOpt.Quantity
+				stmt, _ := db.Prepare("DELETE FROM options WHERE id = $1")
+
+				rows, err := stmt.Query(&id)
+				if err != nil {
+					fmt.Println("ERROR IN REPO: ", err)
+					return err
+				}
+
+				defer rows.Close()
+				log.Println("Quantity = ", opt.Quantity)
+			}
+
+		} else {
+			return errors.New("Invalid selling quantity error")
+		}
+	}
+
+	return nil
 }
