@@ -14,7 +14,10 @@ export default class Portfolio extends Component {
             user: null,
             isLoading: true,
             portfolioData : null,
+            queried:false
         }
+
+        this.resetQueryStates = this.resetQueryStates.bind(this)
     }
 
     onSubmit = async () => {
@@ -22,8 +25,6 @@ export default class Portfolio extends Component {
             email: UserProfile.getName(),
             password: ''
           };
-
-
 
         console.log("Getting portfolio..", creds)
         const headers = {'Content-Type': 'application/json' }
@@ -34,6 +35,7 @@ export default class Portfolio extends Component {
             portfolioData: response.data,
             isLoading: false,
             user: creds.email,
+            queried: true,
           });
           console.log("The user is ", this.state.user)
           console.log("Got data: ", this.state.portfolioData)
@@ -44,12 +46,18 @@ export default class Portfolio extends Component {
         })
     }
 
-    componentDidMount() {
-        this.onSubmit();
-      }
-
+    resetQueryStates(){
+        this.setState({
+            isLoading: true,
+            queried: false
+        });
+    }
 
     render() {
+        if (!this.state.queried){
+            this.onSubmit()
+        }
+
         const { isLoading, portfolioData} = this.state;
         if (isLoading) {
             return (
@@ -65,11 +73,9 @@ export default class Portfolio extends Component {
                         <div className="container">
                             <Title name="Portfolio"/>
                         </div>
-                        {/* {this.onSubmit} */}
                         <Headers user={this.state.user} portfolioData={this.state.portfolioData}/>
-                    
                     </div> 
-                    <DataTable portfolioData={this.state.portfolioData}/>
+                    <DataTable portfolioData={this.state.portfolioData} action={this.resetQueryStates} />
                 </div>
             </React.Fragment>
         );

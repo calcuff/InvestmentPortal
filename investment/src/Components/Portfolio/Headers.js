@@ -25,10 +25,6 @@ export default class Header extends Component {
         
         dolReturn = marketVal - pCost
         percReturn = ( marketVal - pCost)/pCost *100
-        console.log("pcost :", pCost) 
-        console.log("marketValue :", marketVal)
-        console.log("dolReturn :", dolReturn)
-        console.log("percReturn :", percReturn)
 
         this.setState({
             portfolioCost: parseFloat(pCost.toFixed(2)),
@@ -46,7 +42,6 @@ export default class Header extends Component {
           password: '',
         };
 
-        console.log("Getting account balance..", creds)
         const headers = {'Content-Type': 'application/json' }
 
         axios.get('http://localhost:8080/balance/' + creds.email, 

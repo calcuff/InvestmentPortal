@@ -35,7 +35,6 @@ export default class QuoteResults extends React.Component {
           });
           console.log("Got data: ", response.data)
           console.log("Symbol1: ", this.state.quotes.quoteResponse.result[0].symbol);
-          //, this.state.completed.ResultSet.Result[0].name ); 
         })
         .catch(error => {
             console.log("Error: " + error)
@@ -66,6 +65,7 @@ export default class QuoteResults extends React.Component {
                     alert("Success you have just bought stock options!");
                     console.log("Success you bought a stock!")
                 }else {
+                  alert("Error: You do not have enough funds! Check your balance.")
                   console.log("Error you don't have enough funds!")
                   }
             }).catch((error) => console.log("Errs", error));

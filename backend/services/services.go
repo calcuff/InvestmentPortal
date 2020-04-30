@@ -141,7 +141,7 @@ func makePortfolio(currentQuotes []models.CurrentQuote, groupedOpts []models.Por
 
 		entry.PercentChange = calcPercentChange(entry.Price, entry.AvgCost)
 		entry.Change = math.Round((entry.Price-entry.AvgCost)*100) / 100
-		entry.TotalCost = option.TotalCost
+		entry.TotalCost = math.Round(option.TotalCost*100) / 100
 		entry.MarketValue = math.Round(entry.Price*float64(entry.Shares)*100) / 100
 		entry.Return = math.Round((entry.MarketValue-entry.TotalCost)*100) / 100
 

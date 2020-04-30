@@ -19,8 +19,9 @@ class Table extends Component {
          name: 'test',
          shares: 0,
          price: 0,
-         symbol: ''
+         symbol: '',
       }
+      this.sell = this.sell.bind(this)
    }
 
    openDialog(name, price, shares, symbol) {
@@ -60,11 +61,11 @@ class Table extends Component {
        console.log("Data :", res.data)
        if ( res.data === true){
          console.log("SOLD, do other stuff");
-         // UserProfile.setName(this.state.email);
-         // this.setState({ redirect: "/", loggedin: 1});
+         alert("Congrats, funds have been added to your account.")
+         this.props.action()
        }else {
          console.log("sold FAILED, do other stuff");
-         //   this.setState({loggedin: -1});
+         alert("There was an error, options were not sold")
          }
      }
      ).catch((error) => 
