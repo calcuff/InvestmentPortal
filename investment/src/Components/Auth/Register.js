@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import Title from '../Title'
-import {Link} from 'react-router-dom'
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import UserProfile from '../UserProfile';
+import UserProfile from '../Common/UserProfile';
 import chicago from '../../images/chicago.jpg'
-import NavBar from '../NavBar'
+import NavBar from '../Common/NavBar'
+import Button from 'react-bootstrap/Button';
 
 function validate(name, email, password, confpass){
     return {
@@ -36,7 +35,7 @@ export default class Register extends Component {
       }
 
       onSubmit = async () => {
-          if ( this.state.password != this.state.confpass){
+          if ( this.state.password !== this.state.confpass){
             this.setState({goodpassword: -1});
           }else{
             console.log("Registering...", this.state)
@@ -51,7 +50,7 @@ export default class Register extends Component {
                 },{headers: headers})
             .then(res =>{
                 console.log("Data :", res.data)
-                if ( res.data == true){
+                if ( res.data === true){
                     UserProfile.setName(this.state.email);
                     this.setState({ redirect: "/", loggedin: 1});
                 }else {
@@ -145,9 +144,15 @@ export default class Register extends Component {
                     </tbody>
                     </table>
                     <br />
-                    { this.state.loggedin === -1 && <p>Your credentials could not be verified, please try again or use another email address.</p>}
-                    { this.state.goodpassword === -1 && <p>Password does not match.</p>}
-                    <button  disabled={isDisabled} onClick={() => this.onSubmit()} type="primary">Register</button>
+                    { this.state.loggedin === -1 && 
+                        <div className="container"  >
+                        <p style={{color:"white", fontSize:"24px", backgroundColor: "rgba(52, 52, 52, .8)", width:"400px"}}>Your credentials could not be verified, please try again or use another email address.</p>
+                        </div>}
+                    { this.state.goodpassword === -1 && 
+                        <div className="container"  >
+                            <p style={{color:"white", fontSize:"24px", backgroundColor: "rgba(52, 52, 52, .8)", width:"400px"}}>Passwords do not match</p>
+                        </div>}
+                    <Button  style={{marginLeft:"70px"}}disabled={isDisabled} onClick={() => this.onSubmit()} type="primary">Register</Button>
                 </div> 
                 <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>  <br/>
             </div>

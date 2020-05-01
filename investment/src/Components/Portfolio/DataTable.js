@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import './DataTable.css'
 import Button from 'react-bootstrap/Button'
 import Dialog from 'react-dialog'
-import Modal from 'react-bootstrap/Modal'
-import UserProfile from '../UserProfile';
+import UserProfile from '../Common/UserProfile';
 import axios from "axios";
 
 

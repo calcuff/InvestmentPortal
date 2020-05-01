@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
 import axios from "axios";
 import { Redirect } from "react-router-dom";
-import UserProfile from '../UserProfile';
+import UserProfile from '../Common/UserProfile';
 import Button from 'react-bootstrap/Button';
 import chicago from '../../images/chicago.jpg'
-import NavBar from '../NavBar'
+import NavBar from '../Common/NavBar'
 
 export default class Login extends Component {
 
@@ -94,7 +94,10 @@ export default class Login extends Component {
                 </tbody>
               </table>
               <br />
-              { this.state.loggedin === -1 && <p>Your login credentials could not be verified, please try again.</p>}
+              { this.state.loggedin === -1 && 
+                <div className="container"  >
+                  <p style={{color:"white", fontSize:"24px", backgroundColor: "rgba(52, 52, 52, .8)", width:"500px"}}>Your login credentials could not be verified, please try again.</p>
+                </div>}
               <Button onClick={() => this.onSubmit()} type="primary">Login</Button>
               <br/><br/><br/><br/><br/><br/><br/>
               <br/><br/><br/><br/> <br/>

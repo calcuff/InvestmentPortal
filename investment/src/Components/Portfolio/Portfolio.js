@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import Title from '../Title'
-import {Link} from 'react-router-dom'
+import Title from '../Common/Title'
 import Headers from './Headers'
 import DataTable from './DataTable'
 import data from '../../images/dater.jpg'
-import UserProfile from '../UserProfile';
+import UserProfile from '../Common/UserProfile';
 import axios from "axios";
-import NavBar from '../NavBar'
+import NavBar from '../Common/NavBar'
 
 export default class Portfolio extends Component {
     constructor(props){
@@ -61,7 +60,7 @@ export default class Portfolio extends Component {
             this.onSubmit()
         }
 
-        const { isLoading, portfolioData} = this.state;
+        const { isLoading} = this.state;
         if (isLoading) {
             return (
               <div>

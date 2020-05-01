@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import axios from "axios";
-import Title from './Title'
-import UserProfile from './UserProfile';
+import UserProfile from '../Common/UserProfile';
 import Button from 'react-bootstrap/Button';
+import NavBar from '../Common/NavBar'
+import chicago from '../../images/chicago.jpg'
 
 export default class QuoteResults extends React.Component {
     // State will apply to the posts object which is set to loading by default
@@ -97,36 +98,56 @@ export default class QuoteResults extends React.Component {
         if (this.state.isLoading) {
             this.getQuotes()
             return (
-              <div className="col">
-                Loading...
+              <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
+                <NavBar/>
+                <div className="col">
+                  Loading...
+                </div>
               </div>
             );}else if (tickers === ''){
                 return (
+                  <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
+                    <NavBar/>
+                    <br/><br/><br/><br/><br/><br/><br/><br/>
                     <div className="col">
                       No Symbols were inputted  ... Return to previous screen
                     </div>
+                    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+                  </div>
                 )
             }
             else { 
         return (
             <React.Fragment>
-               <Title name="Quote Results"/>
+              <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
+              <NavBar/>
+               <br/><br/>
+              <div className="container">
+                  <h1 bold style={{fontFamily: "typold extended", paddingLeft:"450px"}}>Quote Results</h1>
+              </div>
                 <div className="py-5" style={{textAlign:"center"}}>
                 <div>Quotes for your companies:</div>
-                    {this.state.quotes.quoteResponse.result.map((result => 
+                <br/>
+                    {this.state.quotes.quoteResponse.result.map((result =>
+                    <div> 
                     <div className="card bg-info text-white" style={{width:"300px", alignItems:"center", margin:"0 auto"}}>
-                    <div className="card-body" key={result.symbol} ></div>
-                    <h6 className="card-title">{result.symbol}</h6>
-                    <h6 className="card-title">{result.longName}</h6>
-                    <h6 className="card-title">Current Price: ${result.regularMarketPrice}</h6>
-                      <div>
-                          <button onClick={this.DecreaseItem}>-</button>
-                          <input name="quantity" value={this.state.quantity} style={{textAlign:"center",width:"50px"}} onChange={e => this.onChange(e)} id={result.symbol}/>
-                          <button onClick={this.IncrementItem}>+</button>
-                      </div>
-                    <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice, this.state.quantity)}>BUY
-                    </Button>
-                    </div>))}
+                      <div className="card-body" key={result.symbol} ></div>
+                      <h6 className="card-title">{result.symbol}</h6>
+                      <h6 className="card-title">{result.longName}</h6>
+                      <h6 className="card-title">Current Price: ${result.regularMarketPrice}</h6>
+                        <div>
+                            <button onClick={this.DecreaseItem}>-</button>
+                            <input name="quantity" value={this.state.quantity} style={{textAlign:"center",width:"50px"}} onChange={e => this.onChange(e)} id={result.symbol}/>
+                            <button onClick={this.IncrementItem}>+</button>
+                        </div>
+                        <br/>
+                      <Button className="btn btn-dark"  onClick={() => this.onSubmit(result.longName, result.symbol, result.regularMarketPrice, this.state.quantity)}>BUY
+                      </Button>
+                    </div>
+                    <br/>
+                    </div>
+                    ))}
+                </div>
                 </div>
             </React.Fragment>
         );

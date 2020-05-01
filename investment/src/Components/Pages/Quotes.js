@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import Title from './Title'
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
-import UserProfile from './UserProfile';
+import UserProfile from '../Common/UserProfile';
 import { Redirect } from "react-router-dom";
-import NavBar from './NavBar'
+import NavBar from '../Common/NavBar'
+import chicago from '../../images/chicago.jpg'
+import Card from 'react-bootstrap/Card'
 
 
 export default class Quotes extends Component {
@@ -105,17 +106,20 @@ export default class Quotes extends Component {
         if (this.state.tickered === 0){
         return (
             <React.Fragment>
+                <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
                 <NavBar/>
+                <br/><br/>
                 <div className="py-5">
                     <div className="container">
-                        <Title name="Quotes"/>  
+                    <h1 bold style={{fontFamily: "typold extended", paddingLeft:"270px"}}>REAL TIME QUOTES NOW</h1>
                     </div>
                 </div>
                 <div style={{display: "flex",justifyContent: "center",}}>
                     <label style={{color: "blue", fontSize: "24px"}} >
-                        Enter comma separated stock symbols to get quotes
+                        Enter comma separated stock symbols to get quotes (all CAPS no spaces)
                     </label>
                 </div>
+                <br/>
                 <div style={{display: "flex",justifyContent: "center",}}>
                     <input
                         name='symbols'
@@ -128,12 +132,13 @@ export default class Quotes extends Component {
                 <div style={{display: "flex",justifyContent: "center",}}>
                     <Button onClick={() => this.onTickerSubmit()} type="primary">Get Quotes</Button>
                 </div>
-                <br></br>
+                <br/><br/>
                 <div style={{display: "flex",justifyContent: "center",}}>
                     <label style={{color: "blue", fontSize: "24px"}}>
                        Search by company name to get auto-complete results for trading symbols
                     </label>
                 </div>
+                <br/>
                 <div style={{display: "flex",justifyContent: "center",}}>
                     <input
                         name='query'
@@ -146,16 +151,33 @@ export default class Quotes extends Component {
                 <div style={{display: "flex",justifyContent: "center",}}>
                     <Button variant="secondary" onClick={() => this.onQuerySubmit()} type="primary">Auto-complete</Button>
                 </div>
+                <br/><br/><br/>
+                { this.state.queried === 1 && this.state.isQueryLoading === false && 
+                <div className="container" style={{paddingLeft:"250px"}} >
+                    <div style={{color:"white", fontSize:"24px", backgroundColor: "rgba(52, 52, 52, .4)", width:"600px"}} >
+                        <h2 > Possible companies you were searching for</h2>
+                    </div>
+                    <br/>
+                    {this.state.completed.ResultSet.Result.map((result => 
+                        <div>
+                        <Card border="success" style={{ width: '40rem' }}>
+                        <Card.Header>{result.name}</Card.Header>
+                        <Card.Body>
+                        <Card.Title>Symbol:  {result.symbol}</Card.Title>
+                        <Card.Text>
+                            Some quick example text to build on the card title and make up the bulk
+                            of the card's content.
+                        </Card.Text>
+                        </Card.Body>
+                        </Card>
+                        <br/><br/>
+                        </div>
+                    ))}
+                    </div>
+                }
 
-                { this.state.queried === 1 && this.state.isQueryLoading === false && <div className="container">
-                    <div>Possible companies you were searching for:</div>
-                        {this.state.completed.ResultSet.Result.map((result => 
-                        <div className="card bg-info text-white" >
-                            <div className="card-body" key={result.symbol} ></div>
-                            <h6 className="card-title">{result.symbol}</h6>
-                            <h6 className="card-title">{result.name}</h6>
-                        </div>))}
-                    </div>}
+                <br/><br/>
+                </div>
             </React.Fragment>
         );
         }
