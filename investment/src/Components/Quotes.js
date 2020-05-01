@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import UserProfile from './UserProfile';
 import { Redirect } from "react-router-dom";
+import NavBar from './NavBar'
 
 
 export default class Quotes extends Component {
@@ -104,6 +105,7 @@ export default class Quotes extends Component {
         if (this.state.tickered === 0){
         return (
             <React.Fragment>
+                <NavBar/>
                 <div className="py-5">
                     <div className="container">
                         <Title name="Quotes"/>  

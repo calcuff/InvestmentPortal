@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
 import axios from "axios";
+import chicago from '../images/chicago.jpg'
+import NavBar from './NavBar'
+
 
 export default class Movers extends React.Component {
-    // State will apply to the posts object which is set to loading by default
     state = {
       stocks: [],
       isLoading: true,
       errors: null
     };
-    // Now we're going to make a request for data using axios
+
     getPosts() {
         console.log("Before call")
       axios.get("https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/get-movers?region=US&lang=en", {
@@ -18,64 +20,57 @@ export default class Movers extends React.Component {
                 'Content-Type': 'application/json' 
             }
         }).then(response =>{
-        // Once we get a response and store data, let's change the loading state
-        // .then(result => {
           this.setState({
             stocks: response.data,
             isLoading: false
           });
           console.log("Got data: ", response.data)
         })
-        // If we catch any errors connecting, let's update accordingly
         .catch(error => {
             console.log("Error: " + error)
         });
     }
+
     // Let's our app know we're ready to render the data
     componentDidMount() {
       this.getPosts();
     }
-    // Putting that data to use
+
     render() {
       const { errors, isLoading, stocks } = this.state;
       if (isLoading) {
         return (
-          <div className="col">
-            Loading...
+          <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
+          <NavBar/>
+            <div className="col">
+              Loading...
+            </div>
           </div>
         );}
         else { 
             return (
-        <React.Fragment>    
-          <h2>Market Movers</h2>
-          
-          <div className="container">
-            {stocks.finance.result.map((result => 
-            <div className="card">
-                   <div className="card-body" key={result.id} >
-                   <h5 className="card-title">{result.title}</h5>
-                   <h6 className="card-subtitle mb-2 text-muted">{result.description}</h6>
-                   {result.quotes.map((stock => 
-                   <div >
-                    <h5 className="card-subtitle mb-2"> {stock.fullExchangeName}</h5>
-                   <h5 className="card-subtitle mb-2"> {stock.symbol}</h5>
-                   </div>))}
-                   {/* <h6 className="card-subtitle mb-2 text-muted">Time Zone: {result.exchangeTimezoneName}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted">Symbol: {result.symbol}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted">Market Change: {result.regularMarketChange.fmt}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Market Time: {result.regularMarketTime.fmt}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Market Change Percent: {result.regularMarketChangePercent.fmt}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Quote Type: {result.quoteType}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Market State: {result.marketState}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Market Price: ${result.regularMarketPrice.fmt}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Exchange: {result.exchange}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Short Name: {result.shortName}</h6>
-                   <h6 className="card-subtitle mb-2 text-muted"> Market Previous Close: {result.regularMarketPreviousClose.fmt}</h6> */}
-                   </div>
-            </div>))}
-        </div>
-        </React.Fragment>
-      );
+            <React.Fragment>   
+              <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
+                <NavBar/> 
+               
+                <h2>Market Movers</h2>
+                <div className="container">
+                {stocks.finance.result.map((result => 
+                <div className="card">
+                  <div className="card-body" key={result.id} >
+                    <h5 className="card-title">{result.title}</h5>
+                    <h6 className="card-subtitle mb-2 text-muted">{result.description}</h6>
+                      {result.quotes.map((stock => 
+                      <div >
+                        <h5 className="card-subtitle mb-2"> {stock.fullExchangeName}</h5>
+                        <h5 className="card-subtitle mb-2"> {stock.symbol}</h5>
+                      </div>))}
+                  </div>
+                </div>))}
+              </div>
+            </div>
+            </React.Fragment>
+          );
         }
     }
 }

@@ -6,6 +6,7 @@ import DataTable from './DataTable'
 import data from '../../images/dater.jpg'
 import UserProfile from '../UserProfile';
 import axios from "axios";
+import NavBar from '../NavBar'
 
 export default class Portfolio extends Component {
     constructor(props){
@@ -43,6 +44,7 @@ export default class Portfolio extends Component {
         })
         .catch(error => {
             console.log("Error: " + error)
+            alert("There was an error getting Portfolio, are you logged in?")
         })
     }
 
@@ -54,6 +56,7 @@ export default class Portfolio extends Component {
     }
 
     render() {
+        
         if (!this.state.queried){
             this.onSubmit()
         }
@@ -61,14 +64,19 @@ export default class Portfolio extends Component {
         const { isLoading, portfolioData} = this.state;
         if (isLoading) {
             return (
+              <div>
+                  <NavBar/>
+                
               <div className="col">
                 Loading...
+              </div>
               </div>
             );}
             else { 
         return (
             <React.Fragment>
                 <div  style={{ backgroundImage:`url(${data})`, backgroundSize:"cover"}}>
+                <NavBar/>
                     <div className="py-5">
                         <div className="container">
                             <Title name="Portfolio"/>

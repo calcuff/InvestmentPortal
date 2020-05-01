@@ -2,10 +2,18 @@ import React, {Component } from 'react'
 import {Link} from 'react-router-dom';
 import styled from 'styled-components'
 import {ButtonContainer} from './Button'
+import Dropdown from 'react-bootstrap/DropDown'
+import DropdownButton from 'react-bootstrap/DropDownButton'
+import UserProfile from './UserProfile';
+import Button from 'react-bootstrap/Button'
 
 
 export default class NavBar extends Component{
 
+    logout(){
+        UserProfile.setName('');
+        alert("Logged out successfully")
+    }
 
     render() {
         return (
@@ -13,25 +21,25 @@ export default class NavBar extends Component{
                <Link to="/" className="nav-link">
                     CUFFSTOCK
                </Link>
-            
-               <Link to="/login" className="ml-auto">
-                   <ButtonContainer>
-                       <span className="mr-2">
-                       <i className="fas fa-cart-plus"/>
-                       </span>
-                      Login
-                   </ButtonContainer>
-               </Link>
+                <DropdownButton  className="ml-auto"  id="dropdown-basic-button" title="Login" drop="left" >
+                    <Dropdown.Item href="/login">Login</Dropdown.Item>
+                    <Dropdown.Item href="/register">SignUp</Dropdown.Item>
+                    <button  transparent="true" onClick={this.logout}>Logout </button>
+                </DropdownButton>
            </NavWrapper>
         )
     }
 }
 
 const NavWrapper = styled.nav`
-background:var(--lightBlue);
+background:rgba(52, 52, 52, 0);
 .nav-link{
     color:var(--mainWhite) !important;
     font-size:1.3rem;
     text-transform:capitalize;
 }
 `;
+
+// "rgba(0,0,0,0.3)"
+// background:var(--lightBlue);
+//background:rgba(52, 52, 52, 0.8);

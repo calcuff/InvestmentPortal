@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from "axios";
+import chicago from '../images/chicago.jpg'
+import NavBar from './NavBar'
 
 export default class Summary extends React.Component {
     // State will apply to the posts object which is set to loading by default
@@ -40,13 +42,18 @@ export default class Summary extends React.Component {
       const { errors, isLoading, markets } = this.state;
       if (isLoading) {
         return (
+          <div style={{ backgroundImage:`url(${chicago})`, backgroundSize: "cover" }}>
+          <NavBar/>
           <div className="col">
             Loading...
+          </div>
           </div>
         );}
         else { 
             return (
-        <React.Fragment>    
+        <React.Fragment>   
+           <div style={{ backgroundImage:`url(${chicago})` }}>
+                <NavBar/> 
           <h2>Today's Market Summary</h2>
           
           <div className="container">
@@ -67,6 +74,7 @@ export default class Summary extends React.Component {
                    <h6 className="card-subtitle mb-2 text-muted"> Market Previous Close: {result.regularMarketPreviousClose.fmt}</h6>
                    </div>
             </div>))}
+        </div>
         </div>
         </React.Fragment>
       );
