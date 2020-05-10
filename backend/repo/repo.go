@@ -7,7 +7,7 @@ import (
 	"log"
 	"strconv"
 
-	"../models"
+	"github.com/calcuff/investment-portal/backend/models"
 
 	_ "github.com/lib/pq"
 )

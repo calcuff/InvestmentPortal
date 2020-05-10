@@ -9,8 +9,8 @@ import (
 	"math"
 	"net/http"
 
-	"../models"
-	db "../repo"
+	"github.com/calcuff/investment-portal/backend/models"
+	db "github.com/calcuff/investment-portal/backend/repo"
 )
 
 func YahooSummary() models.YahooResponse {

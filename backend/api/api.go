@@ -7,9 +7,9 @@ import (
 	"log"
 	"net/http"
 
-	"../models"
+	"github.com/calcuff/investment-portal/backend/models"
 
-	"../services"
+	"github.com/calcuff/investment-portal/backend/services"
 	"github.com/julienschmidt/httprouter"
 )
 

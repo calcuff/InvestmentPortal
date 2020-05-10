@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"../models"
+	"github.com/calcuff/investment-portal/backend/models"
 
-	"../api"
+	"github.com/calcuff/investment-portal/backend/api"
 
 	"github.com/julienschmidt/httprouter"
 	"github.com/rs/cors"
